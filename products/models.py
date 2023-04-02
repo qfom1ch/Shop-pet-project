@@ -15,10 +15,7 @@ class ProductCategory(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse(
-            'catalog:product_list_by_category',
-            kwargs={self.slug}
-        )
+        return reverse('products:category',args=[self.slug])
 
 
 class Product(models.Model):
@@ -30,6 +27,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
     updated = models.DateTimeField(auto_now=True, verbose_name='Обновлен')
+    MainImage = models.ImageField(upload_to='Main_products_images', blank=True, verbose_name='Главное изображение')
 
     class Meta:
         ordering = ('name',)
@@ -41,11 +39,14 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('product_detail',
-                       args=[self.category.slug, self.slug])
+        return reverse('products:product_detail', args=[self.category.slug, self.slug])
 
 
 class ProductImage(models.Model):
     product = models.ForeignKey(to=Product, default=None, related_name='images', verbose_name='Товар',
                                 on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products_images', blank=True, verbose_name='Изображение')
+
+    class Meta:
+        verbose_name = 'Изображение'
+        verbose_name_plural = 'Изображения'
