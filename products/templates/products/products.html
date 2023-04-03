@@ -8,8 +8,16 @@
         <div class="row">
 
             <div class="col-lg-3">
-                <h1 class="h2 pb-4">Категории</h1>
-                <ul class="list-unstyled templatemo-accordion">
+                <ul class="list-inline shop-top-menu pb-3 pt-1">
+                    <li class="list-inline-item">
+                <h1 class="h2 pb-4">
+                    <a class="h3 text-dark text-decoration-none mr-3" href="{% url 'products:products' %}">
+                    Все категории
+                    </a>
+                </h1>
+                    </li>
+                </ul>
+                <ul class="list-unstyled templatemo-accordion shop-top-menu pb-3 pt-1">
                     {% for category in categories %}
                     <li class="pb-3">
                         <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{{ category.get_absolute_url }}">
@@ -24,25 +32,30 @@
             <div class="col-lg-9">
                 <div class="row">
                     <div class="col-md-6">
-                        <ul class="list-inline shop-top-menu pb-3 pt-1">
-                            <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none mr-3" href="#">All</a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none mr-3" href="#">Men's</a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none" href="#">Women's</a>
-                            </li>
+                        <ul class="list-inline">
+                            {% if current_category %}
+                                <li class="list-inline-item">
+                                    <p class="text-muted"><strong>{{ current_category.name }}</strong></p>
+                                </li>
+                            {% else %}
+                                <li class="list-inline-item">
+                                    <p class="text-muted"><strong>Все категории</strong></p>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
+
                     <div class="col-md-6 pb-4">
                         <div class="d-flex">
-                            <select class="form-control">
-                                <option>Featured</option>
-                                <option>A to Z</option>
-                                <option>Item</option>
-                            </select>
+                            {% if current_category %}
+                                <form action="{{ current_category.get_absolute_url }}" method="get"  class="form-control">
+                             {% else %}
+                                <form action="{% url 'products:products' %}" method="get"  class="form-control">
+                             {% endif %}
+                              {{ form }}
+                              <p style=""><input type="submit" name="sort" value="Сортировать" class="btn shop-top-menu pb-3 pt-1"
+                                                 }" ></p>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -51,7 +64,9 @@
                     <div class="col-md-4">
                         <div class="card mb-4 product-wap rounded-0">
                             <div class="card rounded-0">
+                                {% if product.MainImage %}
                                 <img class="card-img rounded-0 img-fluid" src="{{ product.MainImage.url }}">
+                                {% endif %}
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                     <ul class="list-unstyled">
                                         <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li>
@@ -61,7 +76,9 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <a href="shop-single.html" class="h3 text-decoration-none">{{ product.name }}</a>
+                                <a href="{{ product.get_absolute_url }}" class="h3 text-decoration-none">
+                                    {{ product.name }}
+                                </a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>M/L/X/XL</li>
                                     <li class="pt-2">
@@ -81,7 +98,7 @@
                                         <i class="text-muted fa fa-star"></i>
                                     </li>
                                 </ul>
-                                <p class="text-center mb-0">$250.00</p>
+                                <p class="text-center mb-0">₽ {{ product.price }}</p>
                             </div>
                         </div>
                     </div>

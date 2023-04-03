@@ -1,3 +1,10 @@
 /*
 Custom Css
 */
+
+.custom {
+    color: blue;
+}
+input[type="submit"].btn:hover {
+  border: 1px solid red;
+}

@@ -78,7 +78,12 @@ body, ul, li, p, a, label, input, div {
 #template-mo-zay-hero-carousel { background: #efefef !important;}
 /* Accordion */
 .templatemo-accordion a { color: #000;}
-.templatemo-accordion a:hover { color: #333d4a;}
+.templatemo-accordion a:hover { color: #334a3f;}
+
+.qq a { color: #000;}
+.qq a:hover { color: #333d4a;}
+
+
 /* Shop */
 .shop-top-menu a:hover { color: #69bb7e !important;}
 /* Product */

@@ -39,7 +39,7 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('products:product_detail', args=[self.category.slug, self.slug])
+        return reverse('products:product_detail', args=[self.slug])
 
 
 class ProductImage(models.Model):
@@ -50,3 +50,7 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = 'Изображение'
         verbose_name_plural = 'Изображения'
+
+
+# from shop.wsgi import *
+# from products.models import ProductCategory
