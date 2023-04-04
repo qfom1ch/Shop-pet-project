@@ -15,7 +15,7 @@ class ProductCategory(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('products:category',args=[self.slug])
+        return reverse('products:category', args=[self.slug])
 
 
 class Product(models.Model):
@@ -52,5 +52,9 @@ class ProductImage(models.Model):
         verbose_name_plural = 'Изображения'
 
 
+
 # from shop.wsgi import *
 # from products.models import ProductCategory
+
+# python3 manage.py dumpdata products.ProductCategory > categories.json
+# python3 manage.py loaddata products/fixtures/categories.json

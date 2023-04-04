@@ -13,9 +13,6 @@ class ProductsListView(TitleMixin, ListView):
     context_object_name = 'products'
     title = 'Shop - Каталог'
 
-
-
-
     def get_queryset(self):
         queryset = super(ProductsListView, self).get_queryset()
 
@@ -34,11 +31,6 @@ class ProductsListView(TitleMixin, ListView):
 
         return queryset
 
-
-
-
-
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = ProductCategory.objects.all()
@@ -54,7 +46,7 @@ class ProductsSingleView(TitleMixin, DetailView):
     model = Product
     template_name = 'products/product_detail.html'
     context_object_name = 'product'
-    title = f'Shop - Информация о продукте'
+    title = 'Shop - Информация о продукте'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
