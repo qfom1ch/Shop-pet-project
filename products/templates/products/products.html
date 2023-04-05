@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="row">
-                 {% cache 300 products page_obj.number category_slug sort %}
+                 {% cache 1 products page_obj.number category_slug sort %}
                     {% for product in products %}
                     <div class="col-md-4">
                         <div class="card mb-4 product-wap rounded-0">
@@ -90,7 +90,7 @@
                                 <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <li>
                                         <a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart" title="Добавить в избранное"></i></a>
-                                        <a class="btn btn-success text-white" href="shop-single.html"><i class="fas fa-cart-plus" title="Добавить в корзину"></i></a>
+                                        <a class="btn btn-success text-white" href="{% url 'cart:cart_add' product.id %}"><i class="fas fa-cart-plus" title="Добавить в корзину"></i></a>
                                     </li>
                                 </ul>
                                 <p class="text-center mb-0">₽ {{ product.price }}</p>

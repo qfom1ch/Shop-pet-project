@@ -5,6 +5,8 @@ from common.views import TitleMixin
 from .forms import SortForm
 from .models import Product, ProductCategory, ProductImage
 
+from cart.forms import CartAddProductForm
+
 
 class ProductsListView(TitleMixin, ListView):
     model = Product
@@ -57,4 +59,15 @@ class ProductsSingleView(TitleMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['images'] = ProductImage.objects.filter(product=self.object.id)
+        context['cart_product_form'] = CartAddProductForm()
         return context
+
+
+# def product_detail(request, id, slug):
+#     product = get_object_or_404(Product,
+#                                 id=id,
+#                                 slug=slug,
+#                                 available=True)
+#     cart_product_form = CartAddProductForm()
+#     return render(request, 'shop/product/detail.html', {'product': product,
+#                                                         'cart_product_form': cart_product_form})
