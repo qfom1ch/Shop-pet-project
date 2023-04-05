@@ -33,12 +33,18 @@ class ProductsListView(TitleMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['categories'] = ProductCategory.objects.all()
         context['form'] = SortForm()
+
+        sort = self.request.GET.get('sort_form', None)
+        context['sort'] = sort
+
         category_slug = self.kwargs.get('category_slug')
         if category_slug:
             context['current_category'] = ProductCategory.objects.get(slug=category_slug)
-        # context['category_slug'] = self.kwargs.get('category_slug')  # <-------------------------------
+        context['category_slug'] = category_slug
+
         return context
 
 

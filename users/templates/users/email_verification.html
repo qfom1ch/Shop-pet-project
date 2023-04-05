@@ -2,7 +2,7 @@
 
 
 
-{% block content%}
+{% block content2 %}
         <main>
             <div class="container">
                 <div class="row justify-content-center">
@@ -14,7 +14,11 @@
                                 <h4>Ваша учетная запись успешно подтверждена!</h4>
                             </div>
                             <div class="card-footer text-center">
-                                <div class="small"><a href="{% url 'login' %}">Продолжить</a></div>
+                              {% if user.is_authenticated %}
+                                <div class="small"><a href="{% url 'index' %}">Продолжить</a></div>
+                              {% else %}
+                                <div class="small"><a href="{% url 'users:login' %}">Продолжить</a></div>
+                              {% endif %}
                             </div>
                         </div>
                     </div>

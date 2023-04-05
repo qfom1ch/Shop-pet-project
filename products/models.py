@@ -52,7 +52,6 @@ class ProductImage(models.Model):
         verbose_name_plural = 'Изображения'
 
 
-
 # from shop.wsgi import *
 # from products.models import ProductCategory
 

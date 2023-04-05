@@ -23,7 +23,8 @@ class UserRegistrationView(TitleMixin, SuccessMessageMixin, CreateView):
     template_name = 'users/registration.html'
     success_url = reverse_lazy('users:login')
     success_message = '''Вы успешно зарегестрировались!
-    Авторизуйтесь!'''
+    Авторизуйтесь!   
+    Пожайлуста подтвердите адрес электронной почты.'''
     title = 'Shop - Регистрация'
 
 
@@ -40,7 +41,7 @@ class UserProfileView(TitleMixin,SuccessMessageMixin, UpdateView):
 
 
 class EmailVerificationView(TitleMixin, TemplateView):
-    title = 'Store - Подтверждение электронной почты'
+    title = 'Shop - Подтверждение электронной почты'
     template_name = 'users/email_verification.html'
 
     def get(self, request, *args, **kwargs):
