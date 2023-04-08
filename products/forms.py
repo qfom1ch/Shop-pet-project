@@ -8,3 +8,4 @@ class SortForm(forms.Form):
                                                         ('-price', 'По убыванию цены')
                                                     ],
                                   widget=forms.Select(attrs={'class': 'form-control'}))
+

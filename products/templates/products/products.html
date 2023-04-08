@@ -6,7 +6,14 @@
     <!-- Start Content -->
     <div class="container py-5">
         <div class="row">
-
+           {% if messages %}
+            <div class=" alert-success alert-dismissible fade show" role="alert"
+                 style="margin-top: 0px;">
+                {% for message in messages%}
+                    {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
             <div class="col-lg-3">
                 <ul class="list-inline shop-top-menu pb-3 pt-1">
                     <li class="list-inline-item">
@@ -68,7 +75,7 @@
                             <div class="card rounded-0">
                                 {% if product.MainImage %}
                                 <a href="{{ product.get_absolute_url }}">
-                                <img class="card-img rounded-0 img-fluid" src="{{ product.MainImage.url }}" title="Перейти к просмотру">
+                                <img class="card-img rounded-0 " src="{{ product.MainImage.url }}" title="Перейти к просмотру" width="350" height="270">
                                     </a>
                                 {% endif %}
 
@@ -89,8 +96,24 @@
                                 </ul>
                                 <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <li>
-                                        <a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart" title="Добавить в избранное"></i></a>
-                                        <a class="btn btn-success text-white" href="{% url 'cart:cart_add' product.id %}"><i class="fas fa-cart-plus" title="Добавить в корзину"></i></a>
+
+
+                                        <a>
+                                          <form action="{% url 'cart:cart_add' product.id %}" method="post" class="form-control">
+                                            {{ cart_product_form_without_choice }}
+                                            {% csrf_token %}
+                                            <button type="submit" class=" btn btn-success text-white" name="" title="Добавить в корзину" >  <i class="fas fa-cart-plus" title="Добавить в корзину"></i>  </button>
+                                        </form>
+                                        </a>
+
+                                        <a>
+                                          <form action="{% url 'favorites:favorites_add' product.id %}" method="post" class="form-control">
+                                            {{ FavoritesAddProductForm }}
+                                            {% csrf_token %}
+                                              <a>
+                                            <button type="submit" class=" btn btn-success text-white" name="submit" title="Добавить в избранное" >  <i class="far fa-heart" title="Добавить в избранное"></i>  </button>
+                                        </form>
+                                        </a>
                                     </li>
                                 </ul>
                                 <p class="text-center mb-0">₽ {{ product.price }}</p>

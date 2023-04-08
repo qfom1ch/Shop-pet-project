@@ -2,22 +2,35 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from products.models import Product
 from .cart import Cart
-from .forms import CartAddProductForm
-
+from .forms import CartAddProductForm, CartAddProductFormWithoutChoice, CartAddProductFormQuantity
 from django.contrib import messages
+
+
+
+
 
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    form = CartAddProductForm(request.POST)
+
+    if CartAddProductForm(request.POST):
+        form = CartAddProductForm(request.POST)
+    else:
+        form = CartAddProductFormWithoutChoice(request.POST)
+
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(product=product,
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
-    messages.success(request, f'{product.name} успешно добавлен в корзину')
+    if form.cleaned_data['update'] == True:
+        messages.success(request, f'Количество изменено')
+    else:
+        messages.success(request, f'Товар успешно добавлен в корзину')
     return redirect(request.META['HTTP_REFERER'])
+
+
 
 
 def cart_remove(request, product_id):
@@ -28,4 +41,8 @@ def cart_remove(request, product_id):
 
 def cart_detail(request):
     cart = Cart(request)
-    return render(request, 'cart/cart_detail.html', {'cart': cart})
+    cart_product_form_quantity = CartAddProductFormQuantity()
+    return render(request, 'cart/cart_detail.html', {'cart': cart,
+                                                     'cart_product_form_quantity': cart_product_form_quantity,
+                                                     })
+

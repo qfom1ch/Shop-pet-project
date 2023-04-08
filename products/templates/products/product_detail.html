@@ -81,10 +81,10 @@
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse. Donec condimentum elementum convallis. Nunc sed orci a diam ultrices aliquet interdum quis nulla.</p>
                             <ul class="list-inline">
                                 <li class="list-inline-item">
-                                    <h6>Avaliable Color :</h6>
+                                    <h6>В наличии :</h6>
                                 </li>
                                 <li class="list-inline-item">
-                                    <p class="text-muted"><strong>White / Black</strong></p>
+                                    <p class=""><b>{{ product.quantity }}</b></p>
                                 </li>
                             </ul>
 
@@ -101,7 +101,7 @@
 
                                 <div class="row pb-3 ">
 
-                                    <div class="col d-grid ">
+                                    <div class="col d-grid">
                                         <form action="{% url 'cart:cart_add' product.id %}" method="post" class="form-control">
                                             {{ cart_product_form }}
                                             {% csrf_token %}
@@ -109,7 +109,18 @@
                                         </form>
 
 
-                                    </div>
+                                         <form action="{% url 'favorites:favorites_add' product.id %}" method="post" class="form-control">
+                                            {{ FavoritesAddProductForm }}
+                                            {% csrf_token %}
+                                              <a>
+                                            <input type="submit" class=" btn-success btn-lg " name="submit"  value="Добавить в избранное">
+                                        </form>
+
+
+                                    </div  >
+
+
+
                                 </div>
 
 

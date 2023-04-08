@@ -1,12 +1,12 @@
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-
+from django import forms
 from common.views import TitleMixin
 from .forms import SortForm
 from .models import Product, ProductCategory, ProductImage
 
-from cart.forms import CartAddProductForm
-
+from cart.forms import CartAddProductForm, CartAddProductFormWithoutChoice
+from favorites.forms import FavoritesAddProductForm
 
 class ProductsListView(TitleMixin, ListView):
     model = Product
@@ -46,7 +46,8 @@ class ProductsListView(TitleMixin, ListView):
         if category_slug:
             context['current_category'] = ProductCategory.objects.get(slug=category_slug)
         context['category_slug'] = category_slug
-
+        context['cart_product_form_without_choice'] = CartAddProductFormWithoutChoice()
+        context['FavoritesAddProductForm'] = FavoritesAddProductForm()
         return context
 
 
@@ -57,9 +58,18 @@ class ProductsSingleView(TitleMixin, DetailView):
     title = 'Shop - Информация о продукте'
 
     def get_context_data(self, **kwargs):
+        product = Product.objects.get(id = self.object.id)
+        initial = {}
+        CHOICES = [(i, i) for i in range(1, product.quantity+1)]
+
+        form = CartAddProductForm(initial=initial)
+        form.fields['quantity'] = forms.TypedChoiceField(label='Количество',  choices=CHOICES, coerce=int,
+                                      widget=forms.Select(attrs={'class': 'form-control'}))
+
         context = super().get_context_data(**kwargs)
         context['images'] = ProductImage.objects.filter(product=self.object.id)
-        context['cart_product_form'] = CartAddProductForm()
+        context['cart_product_form'] = form
+        context['FavoritesAddProductForm'] = FavoritesAddProductForm()
         return context
 
 

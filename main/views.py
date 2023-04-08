@@ -7,4 +7,3 @@ class IndexView(TitleMixin, TemplateView):
     template_name = 'main/index.html'
     title = 'Shop'
 
-
