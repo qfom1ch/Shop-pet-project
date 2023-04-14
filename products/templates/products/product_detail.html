@@ -1,6 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
+{% load cycle_filter %}
 
 {% block content %}
     <!-- Open Content -->
@@ -61,12 +61,17 @@
                             <h1 class="h2">{{ product.name }}</h1>
                             <p class="h3 py-2">₽ {{ product.price}}</p>
                             <p class="py-2">
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-secondary"></i>
-                                <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
+                              {% for i in product.get_avg_rating|create_range %}
+                                  <i class="fa fa-star text-warning"></i>
+                                   {% endfor %}
+
+                               {% for i in 5|subtract:product.get_avg_rating|create_range %}
+                                  <i class="fa fa-star text-secondary"></i>
+                                    {% endfor %}
+
+                                <span class="list-inline-item text-dark"> {% if product.get_avg_rating > 0 %} Рейтинг: {{product.get_avg_rating}} {% else %} Нет оценок {% endif %}|
+
+                                    <a class="list-inline-item text-dark" href="#yakor_1">Отзывы {% if product.get_review|length > 0 %} ({{product.get_review|length}}) {% else %} {%endif%}</a> </span>
                             </p>
                             <ul class="list-inline">
                                 <li class="list-inline-item">
@@ -120,16 +125,83 @@
                                     </div  >
 
 
-
                                 </div>
 
 
                         </div>
+
                     </div>
+
+
+
+                </div >
+
+                   {% if user.is_authenticated %}
+                       <form id="yakor_1" enctype="multipart/form-data" action="{% url 'reviews:add_review' product.id %}" method="post" class="form-control" >
+                          {{ review_form }}
+                          {% csrf_token %}
+                        <a>
+                      <button style="right:-553px; position: relative;" type="submit" class=" btn-success btn-lg" name="submit">Оставить отзыв </button>
+                     </form>
+                    {% else %}
+                    <div class="form-control">
+                        <form action="{% url 'users:login' %}">
+                    <p >Чтобы оставить отзыв войдите:
+                        <button style="right:-px; position: relative;"  type="submit" class=" btn-success " name="submit">Войти </button></p>
+                        </form>
+                        </div>
+                   {% endif %}
+
+
+
+
+
+
+                {% for review in product.get_review %}
+            <div style="word-wrap: break-word;" class="media py-5 form-control">
+                  {% if review.user.image %}
+                <img src="{{ review.user.image.url }}" class="mr-3 img-fluid " alt="image" width="70" height="70">
+                  {% else %}
+                <img src="{% static 'vendor/img/users/default_avatar.jpg' %}" class="mr-3 img-fluid " alt="image" width="70" height="70">
+                  {% endif %}
+
+                    <h5 class="mt-0 editContent">
+                        {{ review.user }}
+                    </h5>
+                <div class="media-body mt-4">
+                    <p class="mt-2 editContent">
+                        {{ review.text }}
+                    </p>
+
+                    {% if review.image %}
+                    <a href="{{ review.image.url }}">
+                        <img src="{{ review.image.url }}" class="mr-3 img-fluid " alt="image" width="130" height="130">
+                    </a>
+                    {% endif %}
+                      <p class="mt-2 editContent">
+                          <b>Оценка: {{ review.rating }}/5</b>
+                       </p>
                 </div>
+
+                {% if review.user == user %}
+                <a href="{% url 'reviews:del_review' review.id %}" class=" ">
+                <button style="right:-1065px; position: relative;" type="submit" class=" text-decoration-none " name="submit">Удалить</button>
+                    </a>
+                {% endif %}
+
+
+            </div>
+            {% endfor %}
+
+
+
+
+
+
             </div>
         </div>
     </section>
+
     <!-- Close Content -->
 {% endblock %}
     <!-- Start Article -->

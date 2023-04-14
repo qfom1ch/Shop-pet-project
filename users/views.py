@@ -1,9 +1,9 @@
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
+from django.shortcuts import HttpResponseRedirect
 
 from common.views import TitleMixin
 
@@ -13,6 +13,11 @@ from .models import EmailVerification, User
 from django.contrib.auth.views import LogoutView
 
 
+
+from cart.cart import persist_session_vars
+from django.utils.decorators import method_decorator
+
+@method_decorator(persist_session_vars(['cart', 'favorites']), name='dispatch')
 class UserLogoutView(LogoutView):
     template_name = 'index'
 
@@ -21,6 +26,9 @@ class UserLoginView(TitleMixin, LoginView):
     template_name = 'users/login.html'
     form_class = UserLoginForm
     title = 'Shop - Авторизация'
+
+
+
 
 
 class UserRegistrationView(TitleMixin, SuccessMessageMixin, CreateView):

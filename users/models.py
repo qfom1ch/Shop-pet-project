@@ -7,19 +7,19 @@ from django.utils.timezone import now
 
 
 class User(AbstractUser):
-    image = models.ImageField(upload_to='user_images', null=True, blank=True)
-    is_verified_email = models.BooleanField(default=False)
-    email = models.EmailField(unique=True, blank=False)
+    image = models.ImageField(upload_to='user_images', null=True, blank=True, verbose_name='Картинка')
+    is_verified_email = models.BooleanField(default=False, verbose_name='Подтвержденный адрес эл. почты')
+    email = models.EmailField(unique=True, blank=False, verbose_name='Эл. почта')
 
     def __str__(self):
         return f'{self.username}'
 
 
 class EmailVerification(models.Model):
-    code = models.UUIDField(unique=True)
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    expiration = models.DateTimeField()
+    code = models.UUIDField(unique=True, verbose_name='Код')
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
+    expiration = models.DateTimeField(verbose_name='Истечение срока')
 
     def __str__(self):
         return f'EmailVerification object for {self.user.email}'

@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from statistics import fmean
 
 
 class ProductCategory(models.Model):
@@ -23,6 +24,7 @@ class Product(models.Model):
     name = models.CharField(max_length=128, db_index=True, verbose_name='Наименование')
     slug = models.SlugField(max_length=200, db_index=True)
     description = models.TextField(blank=True, verbose_name='Описание')
+    short_description = models.TextField(blank=True, verbose_name='Краткое описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
@@ -40,6 +42,16 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('products:product_detail', args=[self.slug])
+
+    def get_review(self):
+        return self.reviews_set.all()
+
+    def get_avg_rating(self):
+        reviews = self.reviews_set.all().order_by('user').distinct()
+        ratings = [rating.rating for rating in reviews]
+        avg_rating = round(fmean(ratings))
+        return avg_rating
+
 
 
 class ProductImage(models.Model):

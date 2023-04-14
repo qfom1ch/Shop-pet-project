@@ -25,6 +25,10 @@ urlpatterns = [
     path('cart/', include('cart.urls', namespace='cart')),
     path('favorites/', include('favorites.urls', namespace='favorites')),
     path('users/', include('users.urls', namespace='users')),
+    path('reviews/', include('reviews.urls', namespace='reviews')),
+    path('orders/', include('orders.urls', namespace='orders')),
+    path('', include('social_django.urls')),
+
 ]
 
 if settings.DEBUG:

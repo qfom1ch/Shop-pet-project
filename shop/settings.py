@@ -33,6 +33,15 @@ env = environ.Env(
 
     REDIS_HOST=(str),
     REDIS_PORT=(str),
+
+    SOCIAL_AUTH_VK_OAUTH2_KEY=(str),
+    SOCIAL_AUTH_VK_OAUTH2_SECRET=(str),
+
+    YANDEX_OAUTH2_CLIENT_KEY=(str),
+    YANDEX_OAUTH2_CLIENT_SECRET=(str),
+
+    YANDEX_SHOP_ID=(str),
+    YANDEX_SECRET_KEY=(str),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -64,15 +73,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'django_redis',
 
+    'django_redis',
     'debug_toolbar',
+    'social_django',
 
     'main',
     'products',
     'users',
     'cart',
     'favorites',
+    'reviews',
+    'orders',
+
 ]
 
 MIDDLEWARE = [
@@ -99,6 +112,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
                 'cart.context_processors.cart',
                 'favorites.context_processors.favorites',
             ],
@@ -195,7 +209,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # Users
 
 AUTH_USER_MODEL = 'users.User'
@@ -224,3 +237,30 @@ EMAIL_USE_SSL = env('EMAIL_USE_SSL')
 
 CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}'
+
+# OAuth
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.yandex.YandexOAuth2',
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+# VK
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = env('SOCIAL_AUTH_VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+
+# Yandex
+
+YANDEX_OAUTH2_CLIENT_KEY = env('YANDEX_OAUTH2_CLIENT_KEY')
+YANDEX_OAUTH2_CLIENT_SECRET = env('YANDEX_OAUTH2_CLIENT_SECRET')
+YANDEX_OAUTH2_SCOPE = ['email']
+
+# YandexPayments
+
+YANDEX_SHOP_ID = env('YANDEX_SHOP_ID')
+YANDEX_SECRET_KEY = env('YANDEX_SECRET_KEY')

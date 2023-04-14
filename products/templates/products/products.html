@@ -1,6 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static cache %}
-
+{% load cycle_filter %}
 
 {% block content %}
     <!-- Start Content -->
@@ -62,7 +62,7 @@
                                 <form action="{% url 'products:products' %}" method="get"  class="form-control">
                              {% endif %}
                               {{ form }}
-                              <p style=""><input type="submit" name="sort" value="Сортировать" class="btn shop-top-menu pb-3 pt-1"></p>
+                              <p style=""><input type="submit" name="submit" value="Сортировать" class=""></p>
                                 </form>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                             </div>
                             <div class="card-body ">
                                 <a href="{{ product.get_absolute_url }}" class="h3 text-decoration-none">
-                                    {{ product.name }}
+                                    <b>{{ product.name }}</b>
                                 </a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>M/L/X/XL</li>
@@ -114,6 +114,17 @@
                                             <button type="submit" class=" btn btn-success text-white" name="submit" title="Добавить в избранное" >  <i class="far fa-heart" title="Добавить в избранное"></i>  </button>
                                         </form>
                                         </a>
+                                    </li>
+                                </ul>
+                                      <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        {% for i in product.get_avg_rating|create_range %}
+                                            <i class="fa fa-star text-warning"></i>
+                                        {% endfor %}
+
+                                        {% for i in 5|subtract:product.get_avg_rating|create_range %}
+                                        <i class="fa fa-star text-secondary"></i>
+                                        {% endfor %}
                                     </li>
                                 </ul>
                                 <p class="text-center mb-0">₽ {{ product.price }}</p>
