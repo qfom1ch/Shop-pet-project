@@ -7,11 +7,16 @@ class Order(models.Model):
     PAID = 1
     ON_WAY = 2
     DELIVERED = 3
+    CANCELED = 4
+    REFUND_SUCCEEDED = 5
+
     STATUSES = (
         (CREATED, 'Создан'),
         (PAID, 'Оплачен'),
         (ON_WAY, 'В пути'),
         (DELIVERED, 'Доставлен'),
+        (CANCELED, 'Отменен'),
+        (REFUND_SUCCEEDED, 'Успешный возврат'),
     )
 
     first_name = models.CharField(max_length=50, verbose_name='Имя')
@@ -24,6 +29,7 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
     updated = models.DateTimeField(auto_now=True, verbose_name='Обновлен')
     status = models.SmallIntegerField(default=CREATED, choices=STATUSES, verbose_name='Статус')
+    payment_id = models.CharField(max_length=128, blank=True, null=True, verbose_name='Идентификатор платежа')
     initiator = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Инициатор')
 
     class Meta:
@@ -49,3 +55,5 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
+
+# from shop.wsgi import *

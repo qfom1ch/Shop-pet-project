@@ -61,6 +61,8 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['https://417d-178-159-54-151.ngrok-free.app','https://*.127.0.0.1']
+
 DOMAIN_NAME = env('DOMAIN_NAME')
 
 # Application definition

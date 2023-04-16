@@ -12,10 +12,10 @@ from .models import EmailVerification, User
 
 from django.contrib.auth.views import LogoutView
 
-
-
-from cart.cart import persist_session_vars
+from .utils import persist_session_vars
 from django.utils.decorators import method_decorator
+
+
 
 @method_decorator(persist_session_vars(['cart', 'favorites']), name='dispatch')
 class UserLogoutView(LogoutView):
