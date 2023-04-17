@@ -1,8 +1,9 @@
-{% extends 'products/base.html' %}
+{% extends 'main/base.html' %}
 {% load humanize %}
 
 
 {% block content %}
+    {% if object_list %}
     <section>
     <div class="container pt-5">
         <div class="text-center mt-5">
@@ -24,9 +25,9 @@
                         <th scope="row">{{ order.id }}</th>
                         <td>{{order.get_status_display}}</td>
                         <td>{{order.created|naturaltime}}</td>
-                        <td>{{order.basket_history.total_sum|intcomma}} руб.</td>
+                        <td>{{order.get_total_cost|intcomma}} руб.</td>
                         <td>
-                            <a href="{% url 'order' order.id %}">просмотреть</a>
+                            <a style="color: black;" href="{% url 'orders:order' order.id %}">просмотреть</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -35,5 +36,17 @@
             </div>
         </div>
     </div>
+
 </section>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    {% else %}
+        <div class="container">
+        <div class="row">
+                    <h4 class="mt-3 mb-3 text-center ">
+                    Заказанных товаров пока нет :)
+                    </h4>
+                </div>
+            </div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    {% endif %}
 {% endblock %}

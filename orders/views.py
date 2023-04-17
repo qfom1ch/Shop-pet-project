@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from common.views import TitleMixin
 from django.views.generic.base import TemplateView
-from django.views.generic.detail import DetailView
 
 from django.views.generic.list import ListView
 from orders.models import Order
@@ -34,7 +33,7 @@ class CanceledTemplateView(TemplateView):
 
 class OrderListView(TitleMixin, ListView):
     template_name = 'orders/orders.html'
-    title = 'Store - Заказы'
+    title = 'Shop - Заказы'
     queryset = Order.objects.all()
     ordering = ('-created')
 
@@ -43,14 +42,13 @@ class OrderListView(TitleMixin, ListView):
         return queryset.filter(initiator=self.request.user)
 
 
-class OrderDetailView(DetailView):
-    template_name = 'orders/order.html'
-    model = Order
+def order_detail(request, pk):
+    order = Order.objects.get(id=pk)
+    order_items = OrderItem.objects.filter(order=order)
+    return render(request, 'orders/order.html', {'order':order,
+                                                 'order_items': order_items,
+                                                 })
 
-    def get_context_data(self, **kwargs):
-        context = super(OrderDetailView, self).get_context_data(**kwargs)
-        context['title'] = f'Store - Заказ #{self.object.id}'
-        return context
 
 
 def order_create(request):
@@ -67,7 +65,7 @@ def order_create(request):
             },
             "confirmation": {
                 "type": "redirect",
-                "return_url": "http://mysite.com:8000/orders/order-success/"
+                "return_url": "http://mysite.com:8443/orders/order-success/"
             },
             "capture": True,
             "description": f"{description}"

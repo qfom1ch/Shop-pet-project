@@ -1,0 +1,45 @@
+{% extends 'main/base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+    <section>
+    <div class="container pt-5">
+        <div class="text-center mt-5">
+            <h1>Заказ #{{ order.id }}</h1>
+            <div class="orders mt-5">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Название</th>
+                        <th scope="col">Кол-во</th>
+                        <th scope="col">Цена</th>
+                        <th scope="col">Сумма</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <th scope="row">
+                           {{ item.product.name }}
+                            <br>
+                        <a href="{{ item.product.get_absolute_url }}">
+                            <img src="{{ item.product.MainImage.url }}" class="mr-3 img-fluid " alt="image" width="120" height="120"
+                                title="Перейти к просмотру">
+                            </a>
+
+                        </th>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price|intcomma }} руб.</td>
+                        <td>{{ item.get_cost|intcomma }} руб.</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p class="float-right h4 mt-3">Итого: {{ order.get_total_cost|intcomma }} руб.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}
