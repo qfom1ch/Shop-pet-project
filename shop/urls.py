@@ -21,6 +21,7 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
+    path('coupons/', include('coupons.urls', namespace='coupons')),
     path('products/', include('products.urls', namespace='products')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('favorites/', include('favorites.urls', namespace='favorites')),
@@ -28,6 +29,7 @@ urlpatterns = [
     path('reviews/', include('reviews.urls', namespace='reviews')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('', include('social_django.urls')),
+
 
 ]
 

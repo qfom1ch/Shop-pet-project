@@ -6,9 +6,9 @@
 <div class="container">
 <div class="row">
   {% if messages %}
-     <div class=" alert-success alert-dismissible fade show" role="alert"
-         style="margin-top: 50px;">
-      {% for message in messages%}
+         <div  class="alert-success alert-dismissible fade show" role="alert"
+            style=" margin-top: 50px;">
+      {% for message in messages %}
           {{ message }}
       {% endfor %}
      </div>
@@ -42,7 +42,7 @@
                                         <form action="{% url 'cart:cart_add' product.id %}" method="post" class="">
                                             {{ cart_product_form_quantity }}
                                             {% csrf_token %}
-                                            <input type="submit" class="btn  btn-success btn-lg " name="submit"  value="Изменить">
+                                            <input type="submit" class="btn  btn-success  " name="submit"  value="Изменить">
                                         </form>
 
                                 </div>
@@ -61,16 +61,40 @@
     {% endfor %}
     <div>
     <div class="card mb-3 col d-grid ">
+        {% if cart.coupon %}
                     <div class="card-footer ">
-                        <p class="float-left">Итого</p>
+                        <p class="float-left">Промежуточный итог:</p>
                         <h4 class="float-right">₽ {{ cart.get_total_price }}</h4>
                     </div>
+
+                    <div class="card-footer ">
+                        <p class="float-left">Промокод: "{{ cart.coupon.code }}"  (скидка {{ cart.coupon.discount }}%)</p>
+                        <h4 style="color: red;" class="float-right">- ₽ {{ cart.get_discount|floatformat:"2" }}</h4>
+                    </div>
+        {% endif %}
+                    <div class="card-footer ">
+                        <p class="float-left">Итого:</p>
+                        <h4 class="float-right">₽ {{ cart.get_total_price_after_discount|floatformat:"2" }}</h4>
+                    </div>
+
+
                 </div>
     {% if user.is_authenticated %}
+         <form class="float-left" action="{% url 'coupons:coupon_apply' %}" method="post">
+            {{ coupon_apply_form }}
+            <input class="btn btn-success  " type="submit" value="Применить">
+                {% csrf_token %}
+            </form>
+
     <a class="btn btn-success btn-lg float-right " href="{% url 'orders:order_create' %}">
                     Оформить заказ
                 </a>
     {% else %}
+         <a class="btn btn-success btn-lg float-left " href="{% url 'users:login' %}">
+                    Чтобы ввести промокод, авторизуйтесь.
+                </a>
+
+
           <a class="btn btn-success btn-lg float-right " href="{% url 'users:login' %}">
                     Чтобы оформить заказ, авторизуйтесь.
                 </a>

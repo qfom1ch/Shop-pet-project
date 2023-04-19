@@ -1,6 +1,9 @@
 from django.db import models
 from products.models import Product
 from users.models import User
+from decimal import Decimal
+from django.core.validators import MinValueValidator, MaxValueValidator
+from coupons.models import Coupon
 
 class Order(models.Model):
     CREATED = 0
@@ -31,6 +34,12 @@ class Order(models.Model):
     status = models.SmallIntegerField(default=CREATED, choices=STATUSES, verbose_name='Статус')
     payment_id = models.CharField(max_length=128, blank=True, null=True, verbose_name='Идентификатор платежа')
     initiator = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Инициатор')
+    coupon = models.ForeignKey(to=Coupon, on_delete=models.CASCADE,
+                               null=True,
+                               blank=True, verbose_name='Купон')
+    discount = models.IntegerField(default=0,
+                                   validators=[MinValueValidator(0),
+                                               MaxValueValidator(100)], verbose_name='Скидка')
 
     class Meta:
         ordering = ('-created',)
@@ -41,7 +50,8 @@ class Order(models.Model):
         return f'Order {self.id}'
 
     def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
+        total_cost = sum(item.get_cost() for item in self.items.all())
+        return total_cost - total_cost * (self.discount / Decimal('100'))
 
 
 class OrderItem(models.Model):

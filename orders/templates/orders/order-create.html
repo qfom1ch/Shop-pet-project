@@ -29,11 +29,21 @@
                             </div>
                         </div>
                         <span style="line-height: 7em;" class="">{{ item.total_price|intcomma }} руб.</span>
-                    </li>
                     {% endfor %}
+
+                    </li>
+
+                       {% if cart.coupon %}
+                         <li class="list-group-item d-flex justify-content-between">
+                           <span>"{{ cart.coupon.code }}" (скидка {{ cart.coupon.discount }}%)</span>
+                            <strong style="color: red;">- ₽ {{ cart.get_discount|floatformat:"2" }}</strong>
+                          </li>
+                        {% endif %}
+
+
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Сумма к оплате</span>
-                        <strong>{{ cart.get_total_price }} руб.</strong>
+                        <strong>{{ cart.get_total_price_after_discount|floatformat:"2" }} руб.</strong>
                     </li>
                 </ul>
             </div>

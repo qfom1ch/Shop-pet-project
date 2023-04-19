@@ -4,7 +4,7 @@ from products.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm, CartAddProductFormWithoutChoice, CartAddProductFormQuantity
 from django.contrib import messages
-
+from coupons.forms import CouponApplyForm
 
 
 
@@ -42,7 +42,9 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     cart = Cart(request)
     cart_product_form_quantity = CartAddProductFormQuantity()
+    coupon_apply_form = CouponApplyForm()
     return render(request, 'cart/cart_detail.html', {'cart': cart,
                                                      'cart_product_form_quantity': cart_product_form_quantity,
+                                                     'coupon_apply_form': coupon_apply_form,
                                                      })
 

@@ -60,12 +60,13 @@ def order_create(request):
     if request.method == 'POST':
         payment = Payment.create({
             "amount": {
-                "value": f'{cart.get_total_price()}',
+                "value": f'{cart.get_total_price_after_discount()}',
                 "currency": "RUB"
             },
             "confirmation": {
                 "type": "redirect",
-                "return_url": "http://mysite.com:8443/orders/order-success/"
+                "return_url": "https://818b-178-159-54-151.ngrok-free.app/orders/order-success/"
+                # "return_url": "http://mysite.com:8443/orders/order-success/"
             },
             "capture": True,
             "description": f"{description}"
@@ -75,7 +76,11 @@ def order_create(request):
         if form.is_valid():
             form.instance.initiator = request.user
             form.instance.payment_id = payment.id
-            order = form.save()
+            order = form.save(commit=False)
+            if cart.coupon:
+                order.coupon = cart.coupon
+                order.discount = cart.coupon.discount
+            order.save()
             for item in cart:
                 OrderItem.objects.create(order=order,
                                          product=item['product'],
@@ -106,6 +111,8 @@ def my_webhook_handler(request):
             order.save()
             quantity_minus_order_quantity(order)
             send_mail_about_order.delay(payment_id)
+
+
 
 
         elif notification_object.event == WebhookNotificationEventType.PAYMENT_CANCELED:
