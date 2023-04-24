@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-    <title>Zay Shop eCommerce HTML CSS Template</title>
+    <title>{{ title }}</title>
 
 
     <meta charset="utf-8">
@@ -73,15 +73,16 @@ https://templatemo.com/tm-559-zay-shop
                             <a class="nav-link" href="{% url 'products:products' %}">  <h5 class=""> <i class="fas fa-duotone fa-bars"></i> Каталог</h5>
                             </a>
                         </li>
-                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Доставка</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Оплата</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'about' %}">О нас</a>
                         </li>
+
+                         <li class="nav-item">
+                            <a class="nav-link" href="{% url 'shipping_and_payment' %}">Доставка и оплата</a>
+                        </li>
+
+
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                         </li>
@@ -102,7 +103,7 @@ https://templatemo.com/tm-559-zay-shop
 
                     <a class="nav-icon position-relative text-decoration-none" href="{% url 'favorites:favorites' %}">
                         Избранное
-                        <i class="fas fa-sharp fa-solid fa-heart"></i>
+                            <i class="fas fa-sharp fa-solid fa-heart"></i>
                     {% with total_items=favorites|length %}
                         {% if favorites|length > 0 %}
                         <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-green">{{ total_items }}</span>

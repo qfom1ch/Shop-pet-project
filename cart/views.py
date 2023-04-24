@@ -46,5 +46,6 @@ def cart_detail(request):
     return render(request, 'cart/cart_detail.html', {'cart': cart,
                                                      'cart_product_form_quantity': cart_product_form_quantity,
                                                      'coupon_apply_form': coupon_apply_form,
+                                                     'title': 'Shop - Корзина',
                                                      })
 

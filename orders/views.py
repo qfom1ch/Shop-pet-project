@@ -22,6 +22,11 @@ from django.views.decorators.csrf import csrf_exempt
 from .utils import get_client_ip, get_descriptions, quantity_minus_order_quantity
 from .tasks import send_mail_about_order
 
+
+from cart.models import Session
+from django.contrib.sessions.backends.db import SessionStore
+
+
 class SuccessTemplateView(TitleMixin, TemplateView):
     template_name = 'orders/success.html'
     title = 'Shop - Спасибо за заказ!'
@@ -45,10 +50,9 @@ class OrderListView(TitleMixin, ListView):
 def order_detail(request, pk):
     order = Order.objects.get(id=pk)
     order_items = OrderItem.objects.filter(order=order)
-    return render(request, 'orders/order.html', {'order':order,
+    return render(request, 'orders/order.html', {'order': order,
                                                  'order_items': order_items,
                                                  })
-
 
 
 def order_create(request):
@@ -65,7 +69,7 @@ def order_create(request):
             },
             "confirmation": {
                 "type": "redirect",
-                "return_url": "https://818b-178-159-54-151.ngrok-free.app/orders/order-success/"
+                "return_url": "https://73ec-178-159-54-151.ngrok-free.app/orders/order-success/"
                 # "return_url": "http://mysite.com:8443/orders/order-success/"
             },
             "capture": True,
@@ -80,6 +84,10 @@ def order_create(request):
             if cart.coupon:
                 order.coupon = cart.coupon
                 order.discount = cart.coupon.discount
+
+                session = Session(session_key=request.session.session_key, payment_id=payment.id)
+                session.save()
+
             order.save()
             for item in cart:
                 OrderItem.objects.create(order=order,
@@ -92,6 +100,9 @@ def order_create(request):
         form = OrderCreateForm
     return render(request, 'orders/order-create.html',
                   {'cart': cart, 'form': form})
+
+
+
 
 
 @csrf_exempt
@@ -112,6 +123,11 @@ def my_webhook_handler(request):
             quantity_minus_order_quantity(order)
             send_mail_about_order.delay(payment_id)
 
+            session = Session.objects.get(payment_id=payment_id)
+            s = SessionStore(session_key=session.session_key)
+            s['coupon_id'] = None
+            s.save()
+            session.delete()
 
 
 

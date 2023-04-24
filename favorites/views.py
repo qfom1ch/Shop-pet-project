@@ -27,4 +27,5 @@ def favorites_remove(request, product_id):
 
 def favorites(request):
     favorites = Favorites(request)
-    return render(request, 'favorites/favorites.html', {'favorites': favorites})
+    return render(request, 'favorites/favorites.html', {'favorites': favorites,
+                                                        'title': 'Shop - Избранное',})
