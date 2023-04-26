@@ -1,12 +1,16 @@
-from django.db import models
-from users.models import User
-from products.models import Product
-from coupons.models import Coupon
 from decimal import Decimal
+
+from django.db import models
+
+from coupons.models import Coupon
+from products.models import Product
+from users.models import User
+
 
 class Session(models.Model):
     session_key = models.CharField(max_length=128)
     payment_id = models.CharField(max_length=128)
+
 
 class CartQuerySet(models.QuerySet):
 
@@ -23,9 +27,9 @@ class CartQuerySet(models.QuerySet):
     def total_sum(self):
         return sum([cart.sum() for cart in self])
 
-
     def total_quantity(self):
         return sum([cart.quantity for cart in self])
+
 
 class Cart(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
@@ -42,17 +46,16 @@ class Cart(models.Model):
     def sum(self):
         return self.product.price * self.quantity
 
-
     @classmethod
     def create_or_update(cls, product_id, user, quantity, coupon_code):
         cart = Cart.objects.filter(user=user, product_id=product_id)
-        if coupon_code != None:
+        if coupon_code is not None:
             coupon = Coupon.objects.get(code=coupon_code)
         else:
             coupon = None
 
         if not cart.exists():
-            if coupon != None:
+            if coupon is not None:
                 obj = Cart.objects.create(user=user, product_id=product_id, quantity=quantity, coupon=coupon)
             else:
                 obj = Cart.objects.create(user=user, product_id=product_id, quantity=quantity)

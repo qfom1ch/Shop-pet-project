@@ -1,15 +1,40 @@
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.mail import send_mail
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
 
 
+class MyUserManager(BaseUserManager):
+
+    def _create_user(self, email, username, password, **extra_fields):
+        if not email:
+            raise ValueError("Вы не ввели Email")
+        if not username:
+            raise ValueError("Вы не ввели Логин")
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username,
+            **extra_fields,
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, username, password):
+        return self._create_user(email, username, password)
+
+    def create_superuser(self, email, username, password):
+        return self._create_user(email, username, password, is_staff=True, is_superuser=True)
+
+
 class User(AbstractUser):
     image = models.ImageField(upload_to='user_images', null=True, blank=True, verbose_name='Картинка')
     is_verified_email = models.BooleanField(default=False, verbose_name='Подтвержденный адрес эл. почты')
     email = models.EmailField(unique=True, blank=False, verbose_name='Эл. почта')
+
+    objects = MyUserManager()
 
     def __str__(self):
         return f'{self.username}'
@@ -26,7 +51,7 @@ class EmailVerification(models.Model):
 
     def send_verification_email(self):
         link = reverse('users:email_verification', kwargs={'email': self.user.email,
-                                                     'code': self.code})
+                                                           'code': self.code})
         verification_link = f'{settings.DOMAIN_NAME}{link}'
         subject = f'Подтверждение учетной записи для {self.user.username}'
         message = 'Для подтверждения учетной записи для {} перейдите по ссылке: {}'.format(self.user.email,
@@ -40,3 +65,7 @@ class EmailVerification(models.Model):
 
     def is_expired(self):
         return True if now() >= self.expiration else False
+
+    class Meta:
+        verbose_name = 'Подтвержденный адрес эл. почты'
+        verbose_name_plural = 'Подтвержденные адреса эл. почты'

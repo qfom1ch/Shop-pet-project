@@ -1,13 +1,15 @@
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
 from django import forms
-from common.views import TitleMixin
-from .forms import SortForm
-from .models import Product, ProductCategory, ProductImage
-from reviews.forms import ReviewForm
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 from cart.forms import CartAddProductForm, CartAddProductFormWithoutChoice
+from common.views import TitleMixin
 from favorites.forms import FavoritesAddProductForm
+from reviews.forms import ReviewForm
+
+from .forms import SortForm
+from .models import Product, ProductCategory, ProductImage
+
 
 class ProductsListView(TitleMixin, ListView):
     model = Product
@@ -56,24 +58,20 @@ class ProductsSingleView(TitleMixin, DetailView):
     model = Product
     template_name = 'products/product_detail.html'
     context_object_name = 'product'
-    title = f'Shop - Информация о продукте'
+    title = 'Shop - Информация о продукте'
 
     def get_context_data(self, **kwargs):
-
-        product = Product.objects.get(id = self.object.id)
+        product = Product.objects.get(id=self.object.id)
         initial = {}
-        CHOICES = [(i, i) for i in range(1, product.quantity+1)]
-
+        CHOICES = [(i, i) for i in range(1, product.quantity + 1)]
 
         form = CartAddProductForm(initial=initial)
-        form.fields['quantity'] = forms.TypedChoiceField(label='Количество',  choices=CHOICES, coerce=int,
-                                      widget=forms.Select(attrs={'class': 'form-control'}))
+        form.fields['quantity'] = forms.TypedChoiceField(label='Количество', choices=CHOICES, coerce=int,
+                                                         widget=forms.Select(attrs={'class': 'form-control'}))
 
         context = super().get_context_data(**kwargs)
         context['images'] = ProductImage.objects.filter(product=self.object.id)
         context['cart_product_form'] = form
         context['FavoritesAddProductForm'] = FavoritesAddProductForm()
-        context['review_form'] = ReviewForm(initial={'user':self.request.user})
+        context['review_form'] = ReviewForm(initial={'user': self.request.user})
         return context
-
-

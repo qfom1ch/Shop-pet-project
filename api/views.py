@@ -1,19 +1,21 @@
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from cart.serializers import CartSerializer
+
 from cart.models import Cart
-from products.models import Product, ProductCategory
-from products.serializers import ProductSerializer, CategorySerializer
+from cart.serializers import CartSerializer
 from favorites.models import Favorites
 from favorites.serializers import FavoritesSerializer
 from orders.models import Order
 from orders.serializers import OrderSerializer
+from products.models import Product, ProductCategory
+from products.serializers import CategorySerializer, ProductSerializer
 from reviews.models import Reviews
 from reviews.serializers import ReviewsSerializer
 from users.models import User
-from users.serializers import UserSerializer
+from users.serializers import UserRegistrationSerializer, UserSerializer
 
 
 class CategoryModelViewSet(ModelViewSet):
@@ -155,3 +157,20 @@ class UserModelViewSet(ModelViewSet):
     serializer_class = UserSerializer
 
     permission_classes = (IsAdminUser,)
+
+
+class RegistrUserView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegistrationSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserRegistrationSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            serializer.save()
+            data['response'] = True
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data = serializer.errors
+            return Response(data)

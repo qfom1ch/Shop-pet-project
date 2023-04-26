@@ -1,7 +1,8 @@
 from django.urls import path
 
-from orders.views import (CanceledTemplateView, order_create,
-                           OrderListView, SuccessTemplateView, my_webhook_handler, order_detail)
+from orders.views import (CanceledTemplateView, OrderListView,
+                          SuccessTemplateView, my_webhook_handler,
+                          order_create, order_detail)
 
 app_name = 'orders'
 

@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.http import require_POST
-from products.models import Product
-from .favorites import Favorites
 from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
+from products.models import Product
+
+from .favorites import Favorites
 from .forms import FavoritesAddProductForm
 
 
@@ -13,10 +15,8 @@ def favorites_add(request, product_id):
     form = FavoritesAddProductForm(request.POST)
     if form.is_valid():
         favorites.add(product=product)
-        messages.success(request, f'Товар успешно добавлен в избранное')
+        messages.success(request, 'Товар успешно добавлен в избранное')
     return redirect(request.META['HTTP_REFERER'])
-
-
 
 
 def favorites_remove(request, product_id):
@@ -25,7 +25,8 @@ def favorites_remove(request, product_id):
     favorites.remove(product)
     return redirect('favorites:favorites')
 
+
 def favorites(request):
     favorites = Favorites(request)
     return render(request, 'favorites/favorites.html', {'favorites': favorites,
-                                                        'title': 'Shop - Избранное',})
+                                                        'title': 'Shop - Избранное', })

@@ -1,30 +1,28 @@
-from django.shortcuts import render
-from common.views import TitleMixin
-from django.views.generic.base import TemplateView
-
-from django.views.generic.list import ListView
-from orders.models import Order
-
-from .models import OrderItem
-from .forms import OrderCreateForm
-from cart.cart import Cart
-from shop.settings import YANDEX_SHOP_ID, YANDEX_SECRET_KEY
+import json
 import uuid
 
-from django.http import HttpResponseRedirect
-
-import json
-from django.http import HttpResponse
-from yookassa import Configuration, Payment
-from yookassa.domain.notification import WebhookNotificationEventType, WebhookNotificationFactory
-from yookassa.domain.common import SecurityHelper
-from django.views.decorators.csrf import csrf_exempt
-from .utils import get_client_ip, get_descriptions, quantity_minus_order_quantity
-from .tasks import send_mail_about_order
-
-
-from cart.models import Session
 from django.contrib.sessions.backends.db import SessionStore
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
+from yookassa import Configuration, Payment
+from yookassa.domain.common import SecurityHelper
+from yookassa.domain.notification import (WebhookNotificationEventType,
+                                          WebhookNotificationFactory)
+
+from cart.cart import Cart
+from cart.models import Session
+from common.views import TitleMixin
+from orders.models import Order
+from shop.settings import YANDEX_SECRET_KEY, YANDEX_SHOP_ID
+
+from .forms import OrderCreateForm
+from .models import OrderItem
+from .tasks import send_mail_about_order
+from .utils import (get_client_ip, get_descriptions,
+                    quantity_minus_order_quantity)
 
 
 class SuccessTemplateView(TitleMixin, TemplateView):
@@ -102,9 +100,6 @@ def order_create(request):
                   {'cart': cart, 'form': form})
 
 
-
-
-
 @csrf_exempt
 def my_webhook_handler(request):
     ip = get_client_ip(request)
@@ -128,8 +123,6 @@ def my_webhook_handler(request):
             s['coupon_id'] = None
             s.save()
             session.delete()
-
-
 
         elif notification_object.event == WebhookNotificationEventType.PAYMENT_CANCELED:
             order = Order.objects.get(payment_id=response_object.id)

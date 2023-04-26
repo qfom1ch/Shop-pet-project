@@ -1,10 +1,12 @@
-from django.shortcuts import redirect
-from django.views.decorators.http import require_POST
-from django.utils import timezone
-from .models import Coupon, UsersUsedCoupon
-from .forms import CouponApplyForm
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.messages.views import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import redirect
+from django.utils import timezone
+from django.views.decorators.http import require_POST
+
+from .forms import CouponApplyForm
+from .models import Coupon, UsersUsedCoupon
+
 
 @require_POST
 def coupon_apply(request):
@@ -24,7 +26,7 @@ def coupon_apply(request):
                 messages.error(request, message)
                 return redirect('cart:cart_detail')
             else:
-                user_used=UsersUsedCoupon(user=request.user, coupon=coupon)
+                user_used = UsersUsedCoupon(user=request.user, coupon=coupon)
                 user_used.save()
                 message = 'Промокод успешно применен'
                 messages.error(request, message)

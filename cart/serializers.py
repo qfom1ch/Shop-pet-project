@@ -1,10 +1,10 @@
 from rest_framework import fields, serializers
+
 from cart.models import Cart
 from products.serializers import ProductSerializer
 
+
 class CartSerializer(serializers.ModelSerializer):
-
-
     product = ProductSerializer()
     sum = fields.FloatField(required=False)
     total_sum = fields.SerializerMethodField()

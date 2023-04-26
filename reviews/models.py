@@ -1,4 +1,5 @@
 from django.db import models
+
 from products.models import Product
 from users.models import User
 
@@ -22,7 +23,7 @@ class Reviews(models.Model):
 
     @classmethod
     def create_or_update(cls, product_id, user, text, rating):
-        if rating != None:
+        if rating is not None:
             obj = Reviews.objects.create(user=user, product_id=product_id, text=text, rating=rating)
         else:
             obj = Reviews.objects.create(user=user, product_id=product_id, text=text)

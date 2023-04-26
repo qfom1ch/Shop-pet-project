@@ -10,7 +10,8 @@ class OrderCreateForm(forms.ModelForm):
     address = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control', 'placeholder': 'ул. Мира, дом 6, кв. 35',
     }))
-    phone_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+7 9XX XXX XX XX'}))
+    phone_number = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+7 9XX XXX XX XX'}))
 
     city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Москва'}))
 
@@ -18,4 +19,4 @@ class OrderCreateForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('first_name', 'last_name','phone_number', 'email', 'city', 'address', 'postal_code')
+        fields = ('first_name', 'last_name', 'phone_number', 'email', 'city', 'address', 'postal_code')

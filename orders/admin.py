@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Order, OrderItem
 
+from .models import Order, OrderItem
 
 
 class OrderItemInline(admin.TabularInline):
@@ -16,4 +16,3 @@ class OrderAdmin(admin.ModelAdmin):
                     'created', 'updated']
     list_filter = ['status', 'created', 'updated']
     inlines = [OrderItemInline]
-

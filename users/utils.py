@@ -1,5 +1,6 @@
 from functools import wraps
 
+
 class persist_session_vars(object):
     """
     Some views, such as login and logout, will reset all session state.

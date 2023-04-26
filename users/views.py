@@ -1,20 +1,16 @@
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
-from django.shortcuts import HttpResponseRedirect
 
 from common.views import TitleMixin
 
 from .forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from .models import EmailVerification, User
-
-from django.contrib.auth.views import LogoutView
-
 from .utils import persist_session_vars
-from django.utils.decorators import method_decorator
-
 
 
 @method_decorator(persist_session_vars(['cart', 'favorites']), name='dispatch')
@@ -28,17 +24,14 @@ class UserLoginView(TitleMixin, LoginView):
     title = 'Shop - Авторизация'
 
 
-
-
-
 class UserRegistrationView(TitleMixin, SuccessMessageMixin, CreateView):
     model = User
     form_class = UserRegistrationForm
     template_name = 'users/registration.html'
     success_url = reverse_lazy('users:login')
-    success_message = '''Вы успешно зарегестрировались!
-    Авторизуйтесь!   
-    Пожайлуста подтвердите адрес электронной почты.'''
+    success_message = ('Вы успешно зарегестрировались!\n'
+                       '    Авторизуйтесь!   \n'
+                       '    Пожайлуста подтвердите адрес электронной почты.')
     title = 'Shop - Регистрация'
 
 

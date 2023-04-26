@@ -61,7 +61,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://73ec-178-159-54-151.ngrok-free.app','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://73ec-178-159-54-151.ngrok-free.app', 'https://*.127.0.0.1']
 
 DOMAIN_NAME = env('DOMAIN_NAME')
 
@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'social_django',
     'rest_framework',
     'rest_framework.authtoken',
+    'djoser',
 
     'main',
     'products',
@@ -271,7 +272,6 @@ YANDEX_OAUTH2_SCOPE = ['email']
 YANDEX_SHOP_ID = env('YANDEX_SHOP_ID')
 YANDEX_SECRET_KEY = env('YANDEX_SECRET_KEY')
 
-
 # Django REST framework
 
 REST_FRAMEWORK = {
@@ -280,4 +280,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+}
+
+# Djoser
+
+DJOSER = {
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
 }

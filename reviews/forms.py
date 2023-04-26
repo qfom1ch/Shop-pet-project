@@ -1,6 +1,8 @@
 from django import forms
-from .models import Reviews
 from django.db.models.fields import BLANK_CHOICE_DASH
+
+from .models import Reviews
+
 
 class ReviewForm(forms.ModelForm):
     """Форма отзывов"""
@@ -11,10 +13,10 @@ class ReviewForm(forms.ModelForm):
 
     image = forms.ImageField(label='', required=False)
 
-    rating =  forms.ChoiceField(label='Оценка:',
-        choices=BLANK_CHOICE_DASH + [
-            (1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')
-        ], required=True)
+    rating = forms.ChoiceField(label='Оценка:',
+                               choices=BLANK_CHOICE_DASH + [
+                                   (1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')
+                               ], required=True)
 
     class Meta:
         model = Reviews

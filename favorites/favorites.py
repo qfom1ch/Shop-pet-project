@@ -1,7 +1,9 @@
-from decimal import Decimal
-from django.conf import settings
-from products.models import Product
 import copy
+
+from django.conf import settings
+
+from products.models import Product
+
 
 class Favorites(object):
 
@@ -16,7 +18,6 @@ class Favorites(object):
             favorites = self.session[settings.FAVORITES_SESSION_ID] = {}
         self.favorites = favorites
 
-
     def add(self, product):
         """
         Добавить продукт в корзину или обновить его количество.
@@ -24,7 +25,7 @@ class Favorites(object):
         product_id = str(product.id)
         if product_id not in self.favorites:
             self.favorites[product_id] = {
-                                     'price': str(product.price)}
+                'price': str(product.price)}
         self.save()
 
     def save(self):
@@ -63,4 +64,3 @@ class Favorites(object):
         # удаление корзины из сессии
         del self.session[settings.FAVORITES_SESSION_ID]
         self.session.modified = True
-

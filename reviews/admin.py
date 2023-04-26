@@ -1,12 +1,14 @@
 from django.contrib import admin
-from .models import Reviews
 from django.utils.safestring import mark_safe
+
+from .models import Reviews
 
 
 @admin.register(Reviews)
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ['product','user', 'rating', 'image_show', 'text', 'pub_date']
-    readonly_fields = ['product','user', 'pub_date', 'image']
+    list_display = ['product', 'user', 'rating', 'image_show', 'text', 'pub_date']
+    list_filter = ['product', 'user', 'rating', 'pub_date']
+    readonly_fields = ['product', 'user', 'pub_date', 'image']
     search_fields = ('name',)
     ordering = ('product',)
 

@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.http import require_POST
-from products.models import Product
-from .cart import Cart
-from .forms import CartAddProductForm, CartAddProductFormWithoutChoice, CartAddProductFormQuantity
 from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
 from coupons.forms import CouponApplyForm
+from products.models import Product
 
-
+from .cart import Cart
+from .forms import (CartAddProductForm, CartAddProductFormQuantity,
+                    CartAddProductFormWithoutChoice)
 
 
 @require_POST
@@ -24,13 +25,11 @@ def cart_add(request, product_id):
         cart.add(product=product,
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
-    if form.cleaned_data['update'] == True:
-        messages.success(request, f'Количество изменено')
+    if form.cleaned_data['update'] is True:
+        messages.success(request, 'Количество изменено')
     else:
-        messages.success(request, f'Товар успешно добавлен в корзину')
+        messages.success(request, 'Товар успешно добавлен в корзину')
     return redirect(request.META['HTTP_REFERER'])
-
-
 
 
 def cart_remove(request, product_id):
@@ -38,6 +37,7 @@ def cart_remove(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
     return redirect('cart:cart_detail')
+
 
 def cart_detail(request):
     cart = Cart(request)
@@ -48,4 +48,3 @@ def cart_detail(request):
                                                      'coupon_apply_form': coupon_apply_form,
                                                      'title': 'Shop - Корзина',
                                                      })
-

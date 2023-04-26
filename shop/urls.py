@@ -31,7 +31,8 @@ urlpatterns = [
     path('orders/', include('orders.urls', namespace='orders')),
     path('', include('social_django.urls')),
     path('api/', include('api.urls', namespace='api')),
-    path('api-token-auth/', obtain_auth_token)
+    path('api-token-auth/', obtain_auth_token),
+    path('auth/', include('djoser.urls')),
 
 
 ]

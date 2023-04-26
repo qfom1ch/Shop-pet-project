@@ -1,6 +1,7 @@
+from statistics import fmean
+
 from django.db import models
 from django.urls import reverse
-from statistics import fmean
 
 
 class ProductCategory(models.Model):
@@ -53,7 +54,6 @@ class Product(models.Model):
         return avg_rating
 
 
-
 class ProductImage(models.Model):
     product = models.ForeignKey(to=Product, default=None, related_name='images', verbose_name='Товар',
                                 on_delete=models.CASCADE)
@@ -62,7 +62,6 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = 'Изображение'
         verbose_name_plural = 'Изображения'
-
 
 # from shop.wsgi import *
 # from products.models import ProductCategory

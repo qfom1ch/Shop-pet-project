@@ -1,7 +1,8 @@
 from celery import shared_task
-from django.core.mail import send_mail
-from .models import Order
 from django.conf import settings
+from django.core.mail import send_mail
+
+from .models import Order
 
 
 @shared_task
@@ -25,7 +26,6 @@ def send_mail_about_order(payment_id):
         recipient_list=[order.email],
         fail_silently=False)
 
-
     mail_sent_for_manager = send_mail(
         subject=subject_for_manager,
         message=message_for_manager,
@@ -34,5 +34,3 @@ def send_mail_about_order(payment_id):
         fail_silently=False)
 
     return mail_sent, mail_sent_for_manager
-
-

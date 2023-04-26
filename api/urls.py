@@ -1,8 +1,10 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from api.views import CategoryModelViewSet, ProductModelViewSet, CartModelViewSet, FavoritesModelViewSet, \
-    OrderModelViewSet, ReviewsModelViewSet, UserModelViewSet
+from api.views import (CartModelViewSet, CategoryModelViewSet,
+                       FavoritesModelViewSet, OrderModelViewSet,
+                       ProductModelViewSet, RegistrUserView,
+                       ReviewsModelViewSet, UserModelViewSet)
 
 app_name = 'api'
 
@@ -17,4 +19,5 @@ router.register(r'users', UserModelViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('registr/', RegistrUserView.as_view(), name='registr')
 ]
