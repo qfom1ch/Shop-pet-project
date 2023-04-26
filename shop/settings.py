@@ -79,6 +79,8 @@ INSTALLED_APPS = [
     'django_redis',
     'debug_toolbar',
     'social_django',
+    'rest_framework',
+    'rest_framework.authtoken',
 
     'main',
     'products',
@@ -88,6 +90,7 @@ INSTALLED_APPS = [
     'reviews',
     'orders',
     'coupons',
+    'api',
 
 ]
 
@@ -267,3 +270,14 @@ YANDEX_OAUTH2_SCOPE = ['email']
 
 YANDEX_SHOP_ID = env('YANDEX_SHOP_ID')
 YANDEX_SECRET_KEY = env('YANDEX_SECRET_KEY')
+
+
+# Django REST framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 7,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}

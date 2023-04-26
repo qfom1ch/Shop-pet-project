@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +30,8 @@ urlpatterns = [
     path('reviews/', include('reviews.urls', namespace='reviews')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('', include('social_django.urls')),
+    path('api/', include('api.urls', namespace='api')),
+    path('api-token-auth/', obtain_auth_token)
 
 
 ]

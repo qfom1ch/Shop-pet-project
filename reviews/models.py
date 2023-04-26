@@ -20,3 +20,10 @@ class Reviews(models.Model):
         verbose_name = "Отзыв"
         verbose_name_plural = "Отзывы"
 
+    @classmethod
+    def create_or_update(cls, product_id, user, text, rating):
+        if rating != None:
+            obj = Reviews.objects.create(user=user, product_id=product_id, text=text, rating=rating)
+        else:
+            obj = Reviews.objects.create(user=user, product_id=product_id, text=text)
+        return obj
