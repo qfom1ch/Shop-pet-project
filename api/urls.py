@@ -9,13 +9,14 @@ from api.views import (CartModelViewSet, CategoryModelViewSet,
 app_name = 'api'
 
 router = routers.DefaultRouter()
-router.register(r'category', CategoryModelViewSet)
-router.register(r'products', ProductModelViewSet)
-router.register(r'cart', CartModelViewSet)
-router.register(r'favorites', FavoritesModelViewSet)
-router.register(r'orders', OrderModelViewSet)
-router.register(r'reviews', ReviewsModelViewSet)
-router.register(r'users', UserModelViewSet)
+
+router.register(r'category', CategoryModelViewSet, basename='category')
+router.register(r'products', ProductModelViewSet, basename='products')
+router.register(r'cart', CartModelViewSet, basename='cart')
+router.register(r'favorites', FavoritesModelViewSet, basename='favorites')
+router.register(r'orders', OrderModelViewSet, basename='orders')
+router.register(r'reviews', ReviewsModelViewSet, basename='reviews')
+router.register(r'users', UserModelViewSet, basename='users')
 
 urlpatterns = [
     path('', include(router.urls)),

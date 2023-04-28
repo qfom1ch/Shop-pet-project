@@ -1,13 +1,14 @@
 from rest_framework import serializers
 
 from users.models import User
+from users.tasks import send_verification_email
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'is_active', 'date_joined', 'image',
-                  'is_verified_email')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'is_active', 'date_joined',
+                  'is_verified_email')  # 'image'
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -28,4 +29,5 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({password: "Пароль не совпадает"})
         user.set_password(password)
         user.save()
+        send_verification_email.delay(user.id)
         return user

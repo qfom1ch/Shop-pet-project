@@ -10,7 +10,7 @@ vendor/
 .flake8
 .pytest_cache/
 .idea/
-
+db_fixtures.json
 
 # pyenv
 .python-version

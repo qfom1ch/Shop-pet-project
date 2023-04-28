@@ -18,10 +18,11 @@ class CartQuerySet(models.QuerySet):
         return self.total_sum() - self.get_discount()
 
     def get_discount(self):
-        coupon = [cart.coupon for cart in self]
-        if coupon:
-            coupon_code = Coupon.objects.get(code=coupon[0].code)
-            return (coupon_code.discount / Decimal('100')) * self.total_sum()
+        coupons = [cart.coupon for cart in self if isinstance(cart.coupon, Coupon)]
+        if coupons:
+            coupon = Coupon.objects.get(code=coupons[0].code)
+            if coupon.active:
+                return (coupon.discount / Decimal('100')) * self.total_sum()
         return Decimal('0')
 
     def total_sum(self):

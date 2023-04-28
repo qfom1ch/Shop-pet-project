@@ -21,6 +21,7 @@ from users.serializers import UserRegistrationSerializer, UserSerializer
 class CategoryModelViewSet(ModelViewSet):
     queryset = ProductCategory.objects.all()
     serializer_class = CategorySerializer
+    pagination_class = None
 
     def get_permissions(self):
         if self.action in ('create', 'destroy', 'update'):
@@ -61,7 +62,6 @@ class CartModelViewSet(ModelViewSet):
             quantity = 1
 
         try:
-
             product_id = request.data['product_id']
             products = Product.objects.filter(id=product_id)
             if not products.exists():
@@ -103,6 +103,7 @@ class OrderModelViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
+    http_method_names = ['get']
 
     def get_queryset(self):
         queryset = super(OrderModelViewSet, self).get_queryset()
@@ -112,7 +113,6 @@ class OrderModelViewSet(ModelViewSet):
 class ReviewsModelViewSet(ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializer
-    pagination_class = None
 
     def get_permissions(self):
         if self.action in ('create', 'destroy', 'update'):
@@ -163,6 +163,8 @@ class RegistrUserView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
     permission_classes = [AllowAny]
+
+    http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
         serializer = UserRegistrationSerializer(data=request.data)
