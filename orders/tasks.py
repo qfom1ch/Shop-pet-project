@@ -8,7 +8,7 @@ from .models import Order
 @shared_task
 def send_mail_about_order(payment_id):
     """
-    Задача для отправки уведомления по электронной почте при успешном создании заказа.
+    A task to send an email notification to the user and manager when an order is successfully created.
     """
     order = Order.objects.get(payment_id=payment_id)
     subject = f'Ваш заказ #{order.id}!'

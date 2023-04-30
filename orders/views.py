@@ -21,7 +21,7 @@ from shop.settings import YANDEX_SECRET_KEY, YANDEX_SHOP_ID
 from .forms import OrderCreateForm
 from .models import OrderItem
 from .tasks import send_mail_about_order
-from .utils import (get_client_ip, get_descriptions,
+from .utils import (get_client_ip, get_descriptions_for_payment,
                     quantity_minus_order_quantity)
 
 
@@ -46,6 +46,7 @@ class OrderListView(TitleMixin, ListView):
 
 
 def order_detail(request, pk):
+    """Returns the user's order data"""
     order = Order.objects.get(id=pk)
     order_items = OrderItem.objects.filter(order=order)
     return render(request, 'orders/order.html', {'order': order,
@@ -54,10 +55,11 @@ def order_detail(request, pk):
 
 
 def order_create(request):
+    """Creates a payment page for the user and creates an order in the database after that clears the user's cart"""
     cart = Cart(request)
     Configuration.account_id = YANDEX_SHOP_ID
     Configuration.secret_key = YANDEX_SECRET_KEY
-    description = get_descriptions([(item['product'].name, item['quantity']) for item in cart])
+    description = get_descriptions_for_payment([(item['product'].name, item['quantity']) for item in cart])
 
     if request.method == 'POST':
         payment = Payment.create({
@@ -102,6 +104,7 @@ def order_create(request):
 
 @csrf_exempt
 def my_webhook_handler(request):
+    """Receives notification from yookassa and updates order details"""
     ip = get_client_ip(request)
     if not SecurityHelper().is_ip_trusted(ip):
         return HttpResponse(status=400)
@@ -119,9 +122,9 @@ def my_webhook_handler(request):
             send_mail_about_order.delay(payment_id)
 
             session = Session.objects.get(payment_id=payment_id)
-            s = SessionStore(session_key=session.session_key)
-            s['coupon_id'] = None
-            s.save()
+            session_user = SessionStore(session_key=session.session_key)
+            session_user['coupon_id'] = None
+            session_user.save()
             session.delete()
 
         elif notification_object.event == WebhookNotificationEventType.PAYMENT_CANCELED:

@@ -8,6 +8,10 @@ from users.models import User
 
 
 class Session(models.Model):
+    """
+    The model for saving the session key is needed so that after the user pays for the order,
+     reset the value of the coupon in the session.
+    """
     session_key = models.CharField(max_length=128)
     payment_id = models.CharField(max_length=128)
 
@@ -15,9 +19,11 @@ class Session(models.Model):
 class CartQuerySet(models.QuerySet):
 
     def get_total_price_after_discount(self):
+        """Returns the discounted price."""
         return self.total_sum() - self.get_discount()
 
     def get_discount(self):
+        """Returns the amount of the discount."""
         coupons = [cart.coupon for cart in self if isinstance(cart.coupon, Coupon)]
         if coupons:
             coupon = Coupon.objects.get(code=coupons[0].code)
@@ -26,9 +32,11 @@ class CartQuerySet(models.QuerySet):
         return Decimal('0')
 
     def total_sum(self):
+        """Returns the sum of all carts."""
         return sum([cart.sum() for cart in self])
 
     def total_quantity(self):
+        """Returns the quantity of all carts."""
         return sum([cart.quantity for cart in self])
 
 
@@ -45,10 +53,15 @@ class Cart(models.Model):
         return f'Корзина для {self.user.username} | Продукт: {self.product.name}'
 
     def sum(self):
+        """Returns the amount of the cart."""
         return self.product.price * self.quantity
 
     @classmethod
     def create_or_update(cls, product_id, user, quantity, coupon_code):
+        """
+        Creates a user's shopping cart and adds a product to it. If the product is in the cart, it updates its quantity.
+        """
+
         cart = Cart.objects.filter(user=user, product_id=product_id)
         if coupon_code is not None:
             coupon = Coupon.objects.get(code=coupon_code)

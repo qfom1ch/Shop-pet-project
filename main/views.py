@@ -21,3 +21,8 @@ class AboutView(TitleMixin, TemplateView):
 class ShippingAndPaymentView(TitleMixin, TemplateView):
     template_name = 'main/shipping_and_payment.html'
     title = 'Shop - Доставка и оплата'
+
+
+class PrivacyPolicyView(TitleMixin, TemplateView):
+    template_name = 'main/privacy_policy.html'
+    title = 'Shop - Политика конфиденциальности'

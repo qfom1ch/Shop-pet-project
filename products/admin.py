@@ -26,6 +26,7 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
     def image_show(self, obj):
+        """function to display a picture in the admin panel"""
         if obj.MainImage:
             return mark_safe("<img src='{}' width='130' />".format(obj.MainImage.url))
         return "None"

@@ -76,7 +76,14 @@
                                 </form>
                             </div>
                             <div class="card-footer text-center">
-                                <div class="small"><a href="{% url 'users:login' %}">
+                                <div class="small text-muted" > Нажимая кнопку "Создать аккаунт" вы соглашаетесь с условиями
+                                 <a  href="{% url 'privacy_policy' %}" style="color: black;" class="text-muted">
+                                     политикой конфиденциальности
+                                </a>
+                                </div>
+                                    <br>
+                                <div class="small">
+                                 <a href="{% url 'users:login' %}" style="color: black;">
                                     Уже есть аккаунт? Авторизоваться
                                 </a>
                                 </div>

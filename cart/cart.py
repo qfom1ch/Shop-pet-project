@@ -11,7 +11,7 @@ class Cart(object):
 
     def __init__(self, request):
         """
-        Инициализируем корзину
+        Initializing the cart.
         """
         self.session = request.session  # request.session.get('coupon_id')
         cart = self.session.get(settings.CART_SESSION_ID)
@@ -23,7 +23,7 @@ class Cart(object):
 
     def add(self, product, quantity=1, update_quantity=False):
         """
-        Добавить продукт в корзину или обновить его количество.
+        Add a product to the cart or update its quantity.
         """
         product_id = str(product.id)
         if product_id not in self.cart:
@@ -41,14 +41,15 @@ class Cart(object):
         self.save()
 
     def save(self):
-        # Обновление сессии cart
+        """
+        Saving a session and marks the session as "modified" to make sure it's saved.
+        """
         self.session[settings.CART_SESSION_ID] = self.cart
-        # Отметить сеанс как "измененный", чтобы убедиться, что он сохранен
         self.session.modified = True
 
     def remove(self, product):
         """
-        Удаление товара из корзины.
+        Removing an item from the cart.
         """
         product_id = str(product.id)
         if product_id in self.cart:
@@ -57,10 +58,9 @@ class Cart(object):
 
     def __iter__(self):
         """
-        Перебор элементов в корзине и получение продуктов из базы данных.
+        Iterating through the items in the cart and getting the products from the database.
         """
         product_ids = self.cart.keys()
-        # получение объектов product и добавление их в корзину
         products = Product.objects.filter(id__in=product_ids)
         cart = copy.deepcopy(self.cart)
         for product in products:
@@ -73,32 +73,43 @@ class Cart(object):
 
     def __len__(self):
         """
-        Подсчет всех товаров в корзине.
+        Counting all items in the cart.
         """
         return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
         """
-        Подсчет стоимости товаров в корзине.
+        Calculate the cost of items in the shopping cart.
         """
         return sum(Decimal(item['price']) * item['quantity'] for item in
                    self.cart.values())
 
     def clear(self):
-        # удаление корзины из сессии
+        """
+        Removing a cart from a session.
+        """
         del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
 
     @property
     def coupon(self):
+        """
+        Checks if there is a coupon in the session and returns it, if not returns None.
+        """
         if self.coupon_id:
             return Coupon.objects.get(id=self.coupon_id)
         return None
 
     def get_discount(self):
+        """
+        Calculation of the amount of the discount.
+        """
         if self.coupon:
             return (self.coupon.discount / Decimal('100')) * self.get_total_price()
         return Decimal('0')
 
     def get_total_price_after_discount(self):
+        """
+        Calculation of the final price after the discount.
+        """
         return self.get_total_price() - self.get_discount()

@@ -9,7 +9,7 @@ class Favorites(object):
 
     def __init__(self, request):
         """
-        Инициализируем корзину
+        Initializing the favorites.
         """
         self.session = request.session
         favorites = self.session.get(settings.FAVORITES_SESSION_ID)
@@ -20,7 +20,7 @@ class Favorites(object):
 
     def add(self, product):
         """
-        Добавить продукт в корзину или обновить его количество.
+        Add a product to the favorites.
         """
         product_id = str(product.id)
         if product_id not in self.favorites:
@@ -29,14 +29,15 @@ class Favorites(object):
         self.save()
 
     def save(self):
-        # Обновление сессии cart
+        """
+        Saving a session and marks the session as "modified" to make sure it's saved.
+        """
         self.session[settings.FAVORITES_SESSION_ID] = self.favorites
-        # Отметить сеанс как "измененный", чтобы убедиться, что он сохранен
         self.session.modified = True
 
     def remove(self, product):
         """
-        Удаление товара из корзины.
+        Removing an item from the favorites.
         """
         product_id = str(product.id)
         if product_id in self.favorites:
@@ -45,10 +46,9 @@ class Favorites(object):
 
     def __iter__(self):
         """
-        Перебор элементов в корзине и получение продуктов из базы данных.
+        Iterating through the items in the favorites and getting the products from the database.
         """
         product_ids = self.favorites.keys()
-        # получение объектов product и добавление их в корзину
         products = Product.objects.filter(id__in=product_ids)
         favorites = copy.deepcopy(self.favorites)
         for product in products:
@@ -58,9 +58,14 @@ class Favorites(object):
             yield item
 
     def __len__(self):
+        """
+        Counting all items in the favorites.
+        """
         return len(self.favorites)
 
     def clear(self):
-        # удаление корзины из сессии
+        """
+        Removing a favorites from a session.
+        """
         del self.session[settings.FAVORITES_SESSION_ID]
         self.session.modified = True

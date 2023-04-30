@@ -53,6 +53,7 @@ class Order(models.Model):
         return f'Order {self.id}'
 
     def get_total_cost(self):
+        """Returns the total price of the order with a discount if it was applied."""
         total_cost = sum(item.get_cost() for item in self.items.all())
         return total_cost - total_cost * (self.discount / Decimal('100'))
 
@@ -67,6 +68,7 @@ class OrderItem(models.Model):
         return f'{self.id}'
 
     def get_cost(self):
+        """Returns the price of a product given its quantity."""
         return self.price * self.quantity
 
 # from shop.wsgi import *

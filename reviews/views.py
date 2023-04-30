@@ -8,7 +8,6 @@ from .forms import ReviewForm
 
 
 class AddReview(View):
-    """Отзывы"""
 
     def post(self, request, pk):
         form = ReviewForm(request.POST, request.FILES)
@@ -23,7 +22,6 @@ class AddReview(View):
 
 
 class DeleteReview(View):
-    """Отзывы"""
 
     def get(self, request, pk):
         Reviews.objects.get(id=pk).delete()

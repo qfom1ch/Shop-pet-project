@@ -123,6 +123,7 @@ TEMPLATES = [
                 'social_django.context_processors.backends',
                 'cart.context_processors.cart',
                 'favorites.context_processors.favorites',
+                'products.context_processors.categories',
             ],
         },
     },

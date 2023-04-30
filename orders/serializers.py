@@ -17,6 +17,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ('id', 'order', 'product', 'price', 'quantity', 'sub_total')
 
     def total(self, order_item=OrderItem):
+        """Returns the price of a product given its quantity."""
         return order_item.quantity * order_item.price
 
 
@@ -39,6 +40,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'updated', 'payment_id', 'initiator', 'coupon', 'discount', 'items', 'grand_total')
 
     def main_total(self, order=Order):
+        """Returns the total price of the order with a discount if it was applied."""
         total_cost = sum(item.get_cost() for item in OrderItem.objects.filter(order=order))
         total = total_cost - total_cost * (Order.objects.get(id=order.id).discount / Decimal('100'))
         return total

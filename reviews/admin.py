@@ -13,6 +13,7 @@ class ReviewsAdmin(admin.ModelAdmin):
     ordering = ('product',)
 
     def image_show(self, obj):
+        """function to display a picture in the admin panel"""
         if obj.image:
             return mark_safe("<img src='{}' width='130' />".format(obj.image.url))
         return "None"

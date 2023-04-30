@@ -2,36 +2,38 @@
 {% load static %}
 
 {% block content %}
-    <!-- Start Content Page -->
-    <div class="container-fluid bg-light py-5">
-        <div class="col-md-6 m-auto text-center">
-            <h1 class="h1">Связаться с нами можно:</h1>
-        </div>
+<!-- Start Content Page -->
+<div class="container-fluid bg-light py-5">
+    <div class="col-md-6 m-auto text-center">
+        <h1 class="h1">Связаться с нами можно:</h1>
     </div>
+</div>
 
 
+<!-- Start Contact -->
+<div class="container py-5">
+    <div class="row py-5">
+        <ul>
+            <li>
+                <p>По телеграмму:<a href="tg://resolve?domain=qfomich" style="color: black;"> <b> +71112223355 </b>
+                    <img src="{% static 'assets/img/LogoTelegram.png' %}" width="30" height="30"></p>
+                </a>
+            </li>
 
-    <!-- Start Contact -->
-    <div class="container py-5">
-        <div class="row py-5">
-                   <ul>
-                       <li>
+            <li>
 
-                           <h5>По телеграмму: +71112223355 <img src="{% static 'assets/img/LogoTelegram.png' %}" width="30" height="30"></h5>
-                       </li>
+                <p>По whatsapp: <a href="https://wa.me/+79301680722" style="color: black;"> <b> +71112223355 </b> <img
+                        src="{% static 'assets/img/LogoWhatsapp.jpg' %}" width="55"
+                        height="40"></p>
+                </a>
+            </li>
 
-                       <li>
+            <li>
+                    <p>VK: <a href="https://vk.me/qfomich" style="color: black;"> <b> Вконтакте: </b> <img src="{% static 'assets/img/LogoVK.png' %}" width="30" height="30"></p>
+            </li>
+        </ul>
 
-                           <h5>По whatsapp: +71112223355 <img src="{% static 'assets/img/LogoWhatsapp.jpg' %}" width="50" height="40"></h5>
-                       </li>
-
-                       <li>
-
-                           <h5>Вконтакте:   <img src="{% static 'assets/img/LogoVK.png' %}" width="30" height="30"></h5>
-                       </li>
-                   </ul>
-
-        </div>
     </div>
-    <!-- End Contact -->
+</div>
+<!-- End Contact -->
 {% endblock %}

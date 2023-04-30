@@ -5,7 +5,6 @@ from .models import Reviews
 
 
 class ReviewForm(forms.ModelForm):
-    """Форма отзывов"""
 
     text = forms.CharField(label='', widget=forms.Textarea(attrs={
         'placeholder': "Оставьте отзыв...", 'cols': 115, 'rows': 5,

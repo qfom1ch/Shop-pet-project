@@ -39,7 +39,6 @@ class ProductsListView(TitleMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['categories'] = ProductCategory.objects.all()
         context['form'] = SortForm()
 
         sort = self.request.GET.get('sort_form', None)
@@ -69,9 +68,12 @@ class ProductsSingleView(TitleMixin, DetailView):
         form.fields['quantity'] = forms.TypedChoiceField(label='Количество', choices=CHOICES, coerce=int,
                                                          widget=forms.Select(attrs={'class': 'form-control'}))
 
+
+
         context = super().get_context_data(**kwargs)
         context['images'] = ProductImage.objects.filter(product=self.object.id)
         context['cart_product_form'] = form
         context['FavoritesAddProductForm'] = FavoritesAddProductForm()
         context['review_form'] = ReviewForm(initial={'user': self.request.user})
+        context['related_products'] = Product.objects.filter(category=product.category).exclude(id=product.id)
         return context

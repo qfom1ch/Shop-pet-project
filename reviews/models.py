@@ -5,7 +5,6 @@ from users.models import User
 
 
 class Reviews(models.Model):
-    """Отзывы"""
 
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Пользователь')
     text = models.TextField("Сообщение", max_length=5000)
@@ -22,7 +21,8 @@ class Reviews(models.Model):
         verbose_name_plural = "Отзывы"
 
     @classmethod
-    def create_or_update(cls, product_id, user, text, rating):
+    def create_review(cls, product_id, user, text, rating):
+        """Creates a user review"""
         if rating is not None:
             obj = Reviews.objects.create(user=user, product_id=product_id, text=text, rating=rating)
         else:

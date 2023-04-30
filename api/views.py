@@ -132,12 +132,16 @@ class ReviewsModelViewSet(ModelViewSet):
         try:
             rating = request.data['rating']
         except KeyError:
-            return Response({'rating': 'обязательное поле.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'product_id': 'обязательное поле.', 'text': 'обязательное поле.', 'rating': 'обязательное поле.'},
+                status=status.HTTP_400_BAD_REQUEST)
 
         try:
             text = request.data['text']
         except KeyError:
-            return Response({'text': 'обязательное поле.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'product_id': 'обязательное поле.', 'text': 'обязательное поле.', 'rating': 'обязательное поле.'},
+                status=status.HTTP_400_BAD_REQUEST)
 
         try:
             product_id = request.data['product_id']
@@ -149,7 +153,9 @@ class ReviewsModelViewSet(ModelViewSet):
             serializer = self.get_serializer(obj)
             return Response(serializer.data, status_code)
         except KeyError:
-            return Response({'product_id': 'обязательное поле.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'product_id': 'обязательное поле.', 'text': 'обязательное поле.', 'rating': 'обязательное поле.'},
+                status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserModelViewSet(ModelViewSet):

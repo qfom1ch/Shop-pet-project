@@ -9,6 +9,7 @@ from django.utils.timezone import now
 class MyUserManager(BaseUserManager):
 
     def _create_user(self, email, username, password, **extra_fields):
+        """Basic function to create a user"""
         if not email:
             raise ValueError("Вы не ввели Email")
         if not username:
@@ -23,9 +24,11 @@ class MyUserManager(BaseUserManager):
         return user
 
     def create_user(self, email, username, password):
+        """Creates a regular user"""
         return self._create_user(email, username, password)
 
     def create_superuser(self, email, username, password):
+        """Creates a superuser"""
         return self._create_user(email, username, password, is_staff=True, is_superuser=True)
 
 
@@ -50,6 +53,7 @@ class EmailVerification(models.Model):
         return f'EmailVerification object for {self.user.email}'
 
     def send_verification_email(self):
+        """Sends an email to the user's email to confirm the email"""
         link = reverse('users:email_verification', kwargs={'email': self.user.email,
                                                            'code': self.code})
         verification_link = f'{settings.DOMAIN_NAME}{link}'
@@ -64,6 +68,7 @@ class EmailVerification(models.Model):
             fail_silently=False)
 
     def is_expired(self):
+        """Checks if the email verification link has expired"""
         return True if now() >= self.expiration else False
 
     class Meta:

@@ -10,6 +10,12 @@ from .models import Coupon, UsersUsedCoupon
 
 @require_POST
 def coupon_apply(request):
+    """
+    Accepts a coupon from the user, and returns a message:
+    If the coupon is accepted - Вы использовали этот промокод.
+    If the coupon has already been used - Промокод успешно применен.
+    If the coupon is incorrect - Неверный промокод.
+    """
     now = timezone.now()
     form = CouponApplyForm(request.POST)
     if form.is_valid():

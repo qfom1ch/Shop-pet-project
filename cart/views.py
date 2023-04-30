@@ -12,6 +12,7 @@ from .forms import (CartAddProductForm, CartAddProductFormQuantity,
 
 @require_POST
 def cart_add(request, product_id):
+    """Adds a product to the user's cart."""
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
 
@@ -33,6 +34,7 @@ def cart_add(request, product_id):
 
 
 def cart_remove(request, product_id):
+    """Removes a product from the user's cart"""
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
@@ -40,6 +42,7 @@ def cart_remove(request, product_id):
 
 
 def cart_detail(request):
+    """Returns the user's cart"""
     cart = Cart(request)
     cart_product_form_quantity = CartAddProductFormQuantity()
     coupon_apply_form = CouponApplyForm()

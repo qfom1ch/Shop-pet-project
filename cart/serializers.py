@@ -17,7 +17,9 @@ class CartSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_timestamp',)
 
     def get_total_sum(self, obj):
+        """Returns the price of the entire cart."""
         return Cart.objects.filter(user=obj.user.id).get_total_price_after_discount()
 
     def get_total_quantity(self, obj):
+        """Returns the number of items in the entire cart."""
         return Cart.objects.filter(user=obj.user.id).total_quantity()
