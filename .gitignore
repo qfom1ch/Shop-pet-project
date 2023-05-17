@@ -7,6 +7,7 @@ db.sqlite3
 media/
 vendor/
 .env
+.env.dev
 .flake8
 .pytest_cache/
 .idea/

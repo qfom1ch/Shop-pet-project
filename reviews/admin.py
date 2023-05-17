@@ -19,3 +19,4 @@ class ReviewsAdmin(admin.ModelAdmin):
         return "None"
 
     image_show.__name__ = "Картинка"
+

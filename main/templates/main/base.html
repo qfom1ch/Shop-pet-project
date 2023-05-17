@@ -187,13 +187,13 @@ https://templatemo.com/tm-559-zay-shop
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-light border-bottom pb-3 border-light">Каталог</h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                    {% cache 1800 categories %}
+
                     {% for category in categories %}
                         <li>
-                            <a class="text-decoration-none" href="{{ category.get_absolute_url }}">{{category.name}}</a>
+                            <a class="text-decoration-none" href="{% url 'products:category' category.slug %}">{{category.name}}</a>
                         </li>
                     {% endfor %}
-                    {% endcache %}
+
                     </ul>
                 </div>
 

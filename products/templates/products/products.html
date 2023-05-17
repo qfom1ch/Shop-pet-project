@@ -25,16 +25,16 @@
                     </li>
                 </ul>
                 <ul class="list-unstyled templatemo-accordion shop-top-menu pb-3 pt-1">
-                  {% cache 1800 products %}
+
                     {% for category in categories %}
                     <li class="pb-3">
-                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{{ category.get_absolute_url }}">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{% url 'products:category' category.slug %}">
                             {{category.name}}
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                     </li>
                     {% endfor %}
-                   {% endcache %}
+
                 </ul>
             </div>
 
@@ -57,7 +57,7 @@
                     <div class="col-md-6 pb-4">
                         <div class="d-flex">
                             {% if current_category %}
-                                <form action="{{ current_category.get_absolute_url }}" method="get"  class="form-control">
+                                <form action="{% url 'products:category' current_category.slug %}" method="get"  class="form-control">
                              {% else %}
                                 <form action="{% url 'products:products' %}" method="get"  class="form-control">
                              {% endif %}
@@ -68,20 +68,20 @@
                     </div>
                 </div>
                 <div class="row">
-                 {% cache 1 products page_obj.number category_slug sort %}
+                 {% cache 0 products page_obj.number category_slug sort %}
                     {% for product in products %}
                     <div class="col-md-4">
                         <div class="card mb-4 product-wap rounded-0">
                             <div class="card rounded-0">
                                 {% if product.MainImage %}
-                                <a href="{{ product.get_absolute_url }}">
+                                <a href="{% url 'products:product_detail' product.slug %}">
                                 <img class="card-img rounded-0 " src="{{ product.MainImage.url }}" title="Перейти к просмотру" width="350" height="270">
                                     </a>
                                 {% endif %}
 
                             </div>
                             <div class="card-body ">
-                                <a href="{{ product.get_absolute_url }}" class="h3 text-decoration-none">
+                                <a href="{% url 'products:product_detail' product.slug %}" class="h3 text-decoration-none">
                                     <b>{{ product.name }}</b>
                                 </a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
@@ -118,13 +118,15 @@
                                 </ul>
                                       <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <li>
-                                        {% for i in product.get_avg_rating|create_range %}
+                                       {% with avg_raring=product.get_avg_rating %}
+                                        {% for i in avg_raring|create_range %}
                                             <i class="fa fa-star text-warning"></i>
                                         {% endfor %}
 
-                                        {% for i in 5|subtract:product.get_avg_rating|create_range %}
+                                        {% for i in 5|subtract:avg_raring|create_range %}
                                         <i class="fa fa-star text-secondary"></i>
                                         {% endfor %}
+                                       {% endwith %}
                                     </li>
                                 </ul>
                                 <p class="text-center mb-0">₽ {{ product.price }}</p>

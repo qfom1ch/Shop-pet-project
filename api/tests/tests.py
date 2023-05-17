@@ -14,7 +14,7 @@ from products.serializers import CategorySerializer, ProductSerializer
 from reviews.models import Reviews
 from reviews.serializers import ReviewsSerializer
 from users.models import User
-from users.serializers import UserRegistrationSerializer, UserSerializer
+from users.serializers import UserSerializer
 
 # Tests CategoryApi
 # python3 manage.py dumpdata --exclude contenttypes -o db_fixtures.json

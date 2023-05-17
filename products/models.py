@@ -42,18 +42,13 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        """Returns the full url of the product"""
-        return reverse('products:product_detail', args=[self.slug])
-
     def get_review(self):
         """Returns all comments for a specific product"""
         return self.reviews_set.all()
 
     def get_avg_rating(self):
         """Calculates the average rating of a product"""
-        reviews = self.reviews_set.all().order_by('user').distinct()
-        ratings = [rating.rating for rating in reviews]
+        ratings = self.reviews_set.all().values_list('rating', flat=True)
         avg_rating = round(fmean(ratings))
         return avg_rating
 

@@ -23,7 +23,7 @@
                         <th scope="row">
                            {{ item.product.name }}
                             <br>
-                        <a href="{{ item.product.get_absolute_url }}">
+                        <a href="{% url 'products:product_detail' item.product.slug %}">
                             <img src="{{ item.product.MainImage.url }}" class="mr-3 img-fluid " alt="image" width="120" height="120"
                                 title="Перейти к просмотру">
                             </a>
