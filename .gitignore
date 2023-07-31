@@ -8,7 +8,6 @@ media/
 vendor/
 .env
 .env.dev
-.flake8
 .pytest_cache/
 .idea/
 db_fixtures.json

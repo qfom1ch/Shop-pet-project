@@ -9,7 +9,7 @@ class Favorites(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     @classmethod
-    def create_and_add(cls, product_id, user):
+    def create_or_update(cls, product_id, user):
         """
         Creates and adds a product to favorites, if there is already a favorite, then simply adds the product.
         """

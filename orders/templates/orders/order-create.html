@@ -21,8 +21,8 @@
 
                             <h6 class="my-0">{{ item.product.name }}</h6>
                             <a href="{{ item.product.get_absolute_url }}">
-                            <img src="{{ item.product.MainImage.url }}" class="mr-3 img-fluid " alt="image" width="120" height="120"
-                                title="Перейти к просмотру">
+                            <img src="{{ item.product.MainImage.url }}" class="mr-3 img-fluid " alt="image" width="120"
+                                 height="120" title="Перейти к просмотру">
                             </a>
                             <div>
                             <small class="">{{ item.quantity }} шт.</small>
@@ -68,7 +68,9 @@
                         </div>
 
                         <div class="col-12 mt-3">
-                            <label for="{{ form.email.id_for_label }}" class="form-label">Адрес электронной почты</label>
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                Адрес электронной почты
+                            </label>
                             {{ form.email }}
                         </div>
 

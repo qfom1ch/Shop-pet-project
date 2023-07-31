@@ -70,5 +70,3 @@ class OrderItem(models.Model):
     def get_cost(self):
         """Returns the price of a product given its quantity."""
         return self.price * self.quantity
-
-# from shop.wsgi import *

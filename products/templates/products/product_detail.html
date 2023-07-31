@@ -18,43 +18,32 @@
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3 ">
                         <a href="{{ product.MainImage.url }}">
-                            <img class="card-img img-fluid" src="{{ product.MainImage.url }}" alt="Card image cap" id="product-detail">
+                            <img class="card-img img-fluid" src="{{ product.MainImage.url }}" alt="Card image cap"
+                                 id="product-detail">
                         </a>
                     </div>
                     <div class="row">
-                        <!--Start Controls-->
 
-                        <!--End Controls-->
-                        <!--Start Carousel Wrapper-->
-                        <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
-                            <!--Start Slides-->
+                        <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item"
+                             data-bs-ride="carousel">
                             <div class="carousel-inner product-links-wap" role="listbox">
-
-                                <!--First slide-->
                                 <div class="carousel-item active">
                                     <div class="row">
                                         {% for image in images %}
                                         <div class="col-4">
                                             <a href="{{ image.image.url }}">
-                                                <img class="card-img img-fluid" src="{{ image.image.url }}" alt="Product Image">
+                                                <img class="card-img img-fluid" src="{{ image.image.url }}"
+                                                     alt="Product Image">
                                             </a>
                                         </div>
                                         {% endfor %}
-
                                     </div>
                                 </div>
-                                <!--/.First slide-->
-
                             </div>
-                            <!--End Slides-->
                         </div>
-                        <!--End Carousel Wrapper-->
-                        <!--Start Controls-->
-
-                        <!--End Controls-->
                     </div>
                 </div>
-                <!-- col end -->
+
                 <div class="col-lg-7 mt-5">
                     <div class="card">
                         <div class="card-body">
@@ -69,22 +58,19 @@
                                {% for i in 5|subtract:avg_raring|create_range %}
                                   <i class="fa fa-star text-secondary"></i>
                                     {% endfor %}
-                                {% endwith %}
-                                <span class="list-inline-item text-dark"> {% if product.get_avg_rating > 0 %} Рейтинг: {{product.get_avg_rating}} {% else %} Нет оценок {% endif %}|
+                                <span class="list-inline-item text-dark">
+                                    {% if avg_raring > 0 %} Рейтинг: {{avg_raring}} {% else %} Нет оценок {% endif %}|
+                                    <a class="list-inline-item text-dark" href="#yakor_1">
+                                        Отзывы ({{product.get_review_count}})
+                                    </a>
+                                </span>
+                            </p>{% endwith %}
 
-                                    <a class="list-inline-item text-dark" href="#yakor_1">Отзывы {% if product.get_review|length > 0 %} ({{product.get_review|length}}) {% else %} {%endif%}</a> </span>
-                            </p>
-                            <ul class="list-inline">
-                                <li class="list-inline-item">
-                                    <h6>Brand:</h6>
-                                </li>
-                                <li class="list-inline-item">
-                                    <p class="text-muted"><strong>Easy Wear</strong></p>
-                                </li>
-                            </ul>
+                            <h6>Описание:</h6>
+                            <p> {{ product.description }} </p>
 
-                            <h6>Description:</h6>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse. Donec condimentum elementum convallis. Nunc sed orci a diam ultrices aliquet interdum quis nulla.</p>
+
+
                             <ul class="list-inline">
                                 <li class="list-inline-item">
                                     <h6>В наличии :</h6>
@@ -94,47 +80,31 @@
                                 </li>
                             </ul>
 
-                            <h6>Specification:</h6>
-                            <ul class="list-unstyled pb-3">
-                                <li>Lorem ipsum dolor sit</li>
-                                <li>Amet, consectetur</li>
-                                <li>Adipiscing elit,set</li>
-                                <li>Duis aute irure</li>
-                                <li>Ut enim ad minim</li>
-                                <li>Dolore magna aliqua</li>
-                                <li>Excepteur sint</li>
-                            </ul>
-
                                 <div class="row pb-3 ">
 
                                     <div class="col d-grid">
-                                        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="form-control">
+                                        <form action="{% url 'cart:cart_add' product.id %}" method="post"
+                                              class="form-control">
                                             {{ cart_product_form }}
                                             {% csrf_token %}
-                                            <input type="submit" class=" btn-success btn-lg " name="submit"  value="Добавить в корзину">
+                                            <input type="submit" class=" btn-success btn-lg " name="submit"
+                                                   value="Добавить в корзину">
                                         </form>
 
 
-                                         <form action="{% url 'favorites:favorites_add' product.id %}" method="post" class="form-control">
+                                         <form action="{% url 'favorites:favorites_add' product.id %}" method="post"
+                                               class="form-control">
                                             {{ FavoritesAddProductForm }}
                                             {% csrf_token %}
                                               <a>
-                                            <input type="submit" class=" btn-success btn-lg " name="submit"  value="Добавить в избранное">
-                                        </form>
-
-
-                                    </div  >
-
-
+                                            <input type="submit" class=" btn-success btn-lg " name="submit"
+                                                   value="Добавить в избранное">
+                                         </form>
+                                    </div>
                                 </div>
-
-
                         </div>
-
                     </div>
-
                 </div >
-
    <!-- Start Article -->
 {% if related_products %}
     <div class="container py-5">
@@ -153,56 +123,58 @@
                             <div class="card mb-4 product-wap rounded-0">
                                 <div class="card rounded-0">
                                     {% if product.MainImage %}
-                                    <a href="{% url 'products:product_detail' product.slug %}">
-                                    <img class="card-img rounded-0 " src="{{ product.MainImage.url }}" title="Перейти к просмотру" width="350" height="270">
+                                    <a href="{{ product.get_absolute_url }}">
+                                    <img class="card-img rounded-0 " src="{{ product.MainImage.url }}"
+                                         title="Перейти к просмотру" width="350" height="270">
                                         </a>
                                     {% endif %}
 
                                 </div>
                                 <div class="card-body ">
-                                    <a href="{% url 'products:product_detail' product.slug %}" class="h3 text-decoration-none">
+                                    <a href="{{ product.get_absolute_url }}" class="h3 text-decoration-none">
                                         <b>{{ product.name }}</b>
                                     </a>
                                     <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                        <li>M/L/X/XL</li>
-                                        <li class="pt-2">
-                                            <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                                            <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                                            <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                                            <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                                            <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-                                        </li>
+                                        <li>{{ product.short_description }}</li>
                                     </ul>
                                     <ul class="list-unstyled d-flex justify-content-center mb-1">
                                         <li>
 
 
                                             <a>
-                                              <form action="{% url 'cart:cart_add' product.id %}" method="post" class="form-control">
+                                              <form action="{% url 'cart:cart_add' product.id %}" method="post"
+                                                    class="form-control">
                                                 {{ cart_product_form_without_choice }}
                                                 {% csrf_token %}
-                                                <button type="submit" class=" btn btn-success text-white" name="" title="Добавить в корзину" >  <i class="fas fa-cart-plus" title="Добавить в корзину"></i>  </button>
+                                                <button type="submit" class=" btn btn-success text-white" name=""
+                                                        title="Добавить в корзину">
+                                                        <i class="fas fa-cart-plus" title="Добавить в корзину"></i>
+                                                </button>
                                             </form>
                                             </a>
 
                                             <a>
-                                              <form action="{% url 'favorites:favorites_add' product.id %}" method="post" class="form-control">
+                                              <form action="{% url 'favorites:favorites_add' product.id %}"
+                                                    method="post" class="form-control">
                                                 {{ FavoritesAddProductForm }}
                                                 {% csrf_token %}
                                                   <a>
-                                                <button type="submit" class=" btn btn-success text-white" name="submit" title="Добавить в избранное" >  <i class="far fa-heart" title="Добавить в избранное"></i>  </button>
+                                                <button type="submit" class=" btn btn-success text-white" name="submit"
+                                                        title="Добавить в избранное">
+                                                        <i class="far fa-heart" title="Добавить в избранное"></i>
+                                                </button>
                                             </form>
                                             </a>
                                         </li>
                                     </ul>
                                           <ul class="list-unstyled d-flex justify-content-center mb-1">
                                         <li>
-                                            {% with avg_raring=product.get_avg_rating %}
-                                            {% for i in avg_raring|create_range %}
+                                            {% with avg_rating=product.get_avg_rating %}
+                                            {% for i in avg_rating|create_range %}
                                                 <i class="fa fa-star text-warning"></i>
                                             {% endfor %}
 
-                                            {% for i in 5|subtract:avg_raring|create_range %}
+                                            {% for i in 5|subtract:avg_rating|create_range %}
                                             <i class="fa fa-star text-secondary"></i>
                                             {% endfor %}
                                             {% endwith %}
@@ -223,11 +195,14 @@
      <!-- End Article -->
 
                    {% if user.is_authenticated %}
-                       <form id="yakor_1" enctype="multipart/form-data" action="{% url 'reviews:add_review' product.id %}" method="post" class="form-control" >
+                       <form id="yakor_1" enctype="multipart/form-data"
+                             action="{% url 'reviews:add_review' product.id %}" method="post" class="form-control" >
                           {{ review_form }}
                           {% csrf_token %}
                         <a>
-                      <button style="right:-553px; position: relative;" type="submit" class=" btn-success btn-lg" name="submit">Оставить отзыв </button>
+                      <button style="right:-553px; position: relative;" type="submit" class=" btn-success btn-lg" name="submit">
+                          Оставить отзыв
+                      </button>
                      </form>
                     {% else %}
                     <div class="form-control">
@@ -239,16 +214,17 @@
                    {% endif %}
 
 
-                {% for review in product.get_review %}
+                {% for review in product.get_review_with_users %}
             <div style="word-wrap: break-word;" class="media py-5 form-control">
                   {% if review.user.image %}
                 <img src="{{ review.user.image.url }}" class="mr-3 img-fluid " alt="image" width="70" height="70">
                   {% else %}
-                <img src="{% static 'vendor/img/users/default_avatar.jpg' %}" class="mr-3 img-fluid " alt="image" width="70" height="70">
+                <img src="{% static 'vendor/img/users/default_avatar.jpg' %}" class="mr-3 img-fluid " alt="image"
+                     width="70" height="70">
                   {% endif %}
 
                     <h5 class="mt-0 editContent">
-                        {{ review.user }}
+                        {{ review.user.username }}
                     </h5>
                 <div class="media-body mt-4">
                     <p class="mt-2 editContent">
@@ -264,7 +240,7 @@
                           <b>Оценка: {{ review.rating }}/5</b>
                        </p>
                 </div>
-                {% if review.user == user %}
+                {% if review.user.username == user.username %}
                 <a href="{% url 'reviews:del_review' review.id %}" class=" ">
                 <button style="right:-1065px; position: relative;" type="submit" class=" text-decoration-none " name="submit">Удалить</button>
                     </a>

@@ -23,9 +23,9 @@
                         <th scope="row">
                            {{ item.product.name }}
                             <br>
-                        <a href="{% url 'products:product_detail' item.product.slug %}">
-                            <img src="{{ item.product.MainImage.url }}" class="mr-3 img-fluid " alt="image" width="120" height="120"
-                                title="Перейти к просмотру">
+                        <a href="{{ item.product.get_absolute_url }}">
+                            <img src="{{ item.product.MainImage.url }}" class="mr-3 img-fluid " alt="image" width="120"
+                                 height="120" title="Перейти к просмотру">
                             </a>
 
                         </th>
@@ -37,12 +37,14 @@
                     </tbody>
                 </table>
                 {% if order.coupon %}
-                <p class="float-right h4 mt-3">Использованный промокод: "{{ order.coupon|intcomma }}" скидка {{ order.discount|intcomma }}%</p>
+                <p class="float-right h4 mt-3">
+                    Использованный промокод: "{{ order.coupon|intcomma }}" скидка {{ order.discount|intcomma }}%
+                </p>
                 {% endif %}
                 <p class="float-right h4 mt-3">Итого: {{ order.get_total_cost|floatformat:"2" }} руб.</p>
             </div>
         </div>
     </div>
 </section>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br>
 {% endblock %}

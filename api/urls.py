@@ -1,10 +1,14 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from api.views import (CartModelViewSet, CategoryModelViewSet,
-                       FavoritesModelViewSet, OrderModelViewSet,
-                       ProductModelViewSet, RegistrUserView,
-                       ReviewsModelViewSet, UserModelViewSet)
+from api.views.cart_views import CartModelViewSet
+from api.views.category_views import CategoryModelViewSet
+from api.views.favorites_views import FavoritesModelViewSet
+from api.views.order_views import OrderModelViewSet
+from api.views.product_views import ProductModelViewSet
+from api.views.registr_views import RegistrUserView
+from api.views.reviews_views import ReviewsModelViewSet
+from api.views.user_views import UserModelViewSet
 
 app_name = 'api'
 

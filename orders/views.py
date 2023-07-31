@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from yookassa import Configuration, Payment
 from yookassa.domain.common import SecurityHelper
@@ -37,21 +38,24 @@ class CanceledTemplateView(TemplateView):
 class OrderListView(TitleMixin, ListView):
     template_name = 'orders/orders.html'
     title = 'Shop - Заказы'
-    queryset = Order.objects.all()
     ordering = ('-created')
 
     def get_queryset(self):
-        queryset = super(OrderListView, self).get_queryset()
-        return queryset.filter(initiator=self.request.user)
+        queryset = Order.objects.prefetch_related('items').filter(initiator=self.request.user)
+        return queryset
 
 
-def order_detail(request, pk):
-    """Returns the user's order data"""
-    order = Order.objects.get(id=pk)
-    order_items = OrderItem.objects.filter(order=order)
-    return render(request, 'orders/order.html', {'order': order,
-                                                 'order_items': order_items,
-                                                 })
+class OrderDetail(TitleMixin, DetailView):
+    model = Order
+    queryset = Order.objects.select_related('coupon')
+    template_name = 'orders/order.html'
+    context_object_name = 'order'
+    title = 'Shop - Информация о заказе'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['order_items'] = OrderItem.objects.select_related('product').filter(order=self.kwargs.get('pk'))
+        return context
 
 
 def order_create(request):
@@ -69,7 +73,7 @@ def order_create(request):
             },
             "confirmation": {
                 "type": "redirect",
-                "return_url": "https://73ec-178-159-54-151.ngrok-free.app/orders/order-success/"
+                "return_url": "https://0625-178-159-54-151.ngrok-free.app/orders/order-success/"
                 # "return_url": "http://mysite.com:8443/orders/order-success/"
             },
             "capture": True,

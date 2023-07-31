@@ -1,32 +1,25 @@
 services:
+
+  database:
+    image: postgres:15.2-alpine
+    env_file:
+      - ./.env.example
+
   web-shop:
     build: .
     volumes:
       - ./:/shop
     ports:
-      - "8000:8000"
+      - "8001:8000"
     env_file:
-      - ./.env.dev
-    environment:
-      - DATABASE_HOST=database
-      - DATABASE_NAME=dbname
-      - DATABASE_USER=dbuser
-      - DATABASE_PASSWORD=pass
-      - DATABASE_PORT=5432
+      - ./.env.example
     command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
-
+      sh -c "python3 manage.py migrate 
+      && python3 manage.py loaddata db_fixtures_docker.json
+      && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - database
-
-
-  database:
-    image: postgres:15.2-alpine
-    environment:
-      - POSTGRES_DB=dbname
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=pass
-      - DATABASE_PORT=5432
+      - redis
 
   redis:
     image: redis:6.0.16-alpine

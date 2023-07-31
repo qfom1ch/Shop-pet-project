@@ -14,7 +14,6 @@ class Favorites(object):
         self.session = request.session
         favorites = self.session.get(settings.FAVORITES_SESSION_ID)
         if not favorites:
-            # save an empty cart in the session
             favorites = self.session[settings.FAVORITES_SESSION_ID] = {}
         self.favorites = favorites
 

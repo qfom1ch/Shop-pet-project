@@ -8,7 +8,6 @@ from .models import Reviews
 class ReviewsAdmin(admin.ModelAdmin):
     list_display = ['product', 'user', 'rating', 'image_show', 'text', 'pub_date']
     list_filter = ['product', 'user', 'rating', 'pub_date']
-    readonly_fields = ['product', 'user', 'pub_date', 'image']
     search_fields = ('name',)
     ordering = ('product',)
 
@@ -19,4 +18,3 @@ class ReviewsAdmin(admin.ModelAdmin):
         return "None"
 
     image_show.__name__ = "Картинка"
-

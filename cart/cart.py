@@ -13,10 +13,9 @@ class Cart(object):
         """
         Initializing the cart.
         """
-        self.session = request.session  # request.session.get('coupon_id')
+        self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
-            # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
         self.coupon_id = self.session.get('coupon_id')

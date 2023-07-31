@@ -27,7 +27,8 @@
                             <div class="card mb-4 product-wap rounded-0">
                                 <div class="card rounded-0">
                                     <a href="{% url 'products:product_detail' product.slug %}">
-                                        <img class="card-img rounded-0 img-fluid" src="{{ product.MainImage.url }}" title="Перейти к просмотру" >
+                                        <img class="card-img rounded-0 img-fluid" src="{{ product.MainImage.url }}"
+                                             title="Перейти к просмотру" >
                                      </a>
                                 </div>
                             </div>
@@ -38,11 +39,13 @@
                         <li class="list-group-item bg-light">
                             <div class="row text-center">
                                 <div class="col-lg-4">
-                                    <h7 class="card-title">(В наличии: {{ product.quantity}})  &emsp;&emsp;&emsp;&emsp; Выбранное кол-во:  <b>{{ item.quantity }}</b></h7>
+                                    <h7 class="card-title">(В наличии: {{ product.quantity}})  &emsp;&emsp;&emsp;&emsp; Выбранное кол-во:
+                                        <b>{{ item.quantity }}</b></h7>
                                         <form action="{% url 'cart:cart_add' product.id %}" method="post" class="">
                                             {{ cart_product_form_quantity }}
                                             {% csrf_token %}
-                                            <input type="submit" class="btn  btn-success  " name="submit"  value="Изменить">
+                                            <input type="submit" class="btn  btn-success  " name="submit"
+                                                   value="Изменить">
                                         </form>
 
                                 </div>
@@ -68,7 +71,9 @@
                     </div>
 
                     <div class="card-footer ">
-                        <p class="float-left">Промокод: "{{ cart.coupon.code }}"  (скидка {{ cart.coupon.discount }}%)</p>
+                        <p class="float-left">
+                            Промокод: "{{ cart.coupon.code }}"  (скидка {{ cart.coupon.discount }}%)
+                        </p>
                         <h4 style="color: red;" class="float-right">- ₽ {{ cart.get_discount|floatformat:"2" }}</h4>
                     </div>
         {% endif %}
@@ -101,26 +106,11 @@
     {% endif %}
         </div>
     <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
-    <h4 class="mt-3 mb-3 text-center "></h4>
+
 {% else %}
     <h4 class="mt-3 mb-3 text-center ">
         В корзине товаров пока нет :)
     </h4>
-
     </div>
 </div>
 {% endif %}
