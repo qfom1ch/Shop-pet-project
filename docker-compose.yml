@@ -15,7 +15,9 @@ services:
       - ./.env.example
     command: >
       sh -c "python3 manage.py migrate 
+      && sleep 2s
       && python3 manage.py loaddata db_fixtures_docker.json
+      && sleep 2s
       && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - database

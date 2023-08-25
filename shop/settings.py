@@ -61,7 +61,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://a47c-178-159-54-151.ngrok-free.app', 'https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://010d-178-159-54-151.ngrok-free.app', 'https://*.127.0.0.1']
 
 DOMAIN_NAME = env('DOMAIN_NAME')
 
@@ -140,8 +140,8 @@ INTERNAL_IPS = [
 
 # Redis
 
-# REDIS_HOST = env('REDIS_HOST')
-# REDIS_PORT = env('REDIS_PORT')
+REDIS_HOST = env('REDIS_HOST')
+REDIS_PORT = env('REDIS_PORT')
 
 # Caches
 
@@ -149,8 +149,8 @@ INTERNAL_IPS = [
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        #'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',
-        'LOCATION': f'redis://redis:6379/1',
+        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',
+        #'LOCATION': f'redis://redis:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -247,11 +247,11 @@ EMAIL_USE_SSL = env('EMAIL_USE_SSL')
 # Celery
 
 # for docker
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+# CELERY_BROKER_URL = 'redis://redis:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
-# CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
-# CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}'
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
+CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 
 # OAuth
 
