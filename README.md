@@ -24,7 +24,7 @@
 
 ## Общий вид интернет-магазина:
 ### Каталог
-![ScreenShot](screenshots/shop1.png)
+![ScreenShot](screenshots/shop1n.png)
 ### Детали товара
 ![ScreenShot](screenshots/shop2.png)
 
